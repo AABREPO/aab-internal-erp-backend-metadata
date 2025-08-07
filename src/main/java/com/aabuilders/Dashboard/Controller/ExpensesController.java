@@ -24,7 +24,7 @@ public class ExpensesController {
         try {
             ExpensesForm expensesForm = new ExpensesForm();
             expensesForm.setAccountType(expensesFormDto.getAccountType());
-            expensesForm.setENo(expensesFormDto.getENo());
+            expensesForm.setENo(expensesFormDto.getEno());
             expensesForm.setTimestamp(LocalDateTime.now()); // Set the current date and time
             expensesForm.setDate(expensesFormDto.getDate());
             expensesForm.setSiteName(expensesFormDto.getSiteName());
