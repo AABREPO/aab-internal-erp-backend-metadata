@@ -12,4 +12,7 @@ public interface ExpensesServices {
     boolean updateExpense(Long id, ExpensesEdit expensesEdit);
     List<ExpensesAudit> getAllAuditsByExpenseId(Long expenseId);
     boolean clearExpenseData(Long id, String editedBy);
+    List<ExpensesForm> getElectricityUtilityBills();
+    List<ExpensesForm> getPropertyUtilityBills();
+    List<ExpensesForm> getWaterUtilityBills();
 }

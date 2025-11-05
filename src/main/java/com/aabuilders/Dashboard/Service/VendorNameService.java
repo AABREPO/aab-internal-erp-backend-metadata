@@ -21,31 +21,55 @@ public class VendorNameService {
     private VendorNameRepository vendorNameRepository;
     @Autowired
     private ExpensesRepo expensesRepo;
-    public VendorNames saveVendorName(VendorNames vendorNames){
+
+    public VendorNames saveVendorName(VendorNames vendorNames, MultipartFile file) {
+        try {
+            if (file != null && !file.isEmpty()) {
+                vendorNames.setUpiQRImage(file.getBytes());
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to save QR image", e);
+        }
         return vendorNameRepository.save(vendorNames);
     }
+
     public List<VendorNames> getAllVendorNames(){
         return vendorNameRepository.findAll();
     }
 
-    public VendorNames updateVendorNames(Long id, VendorNames vendorNames){
-        Optional<VendorNames> existingVendorNames = vendorNameRepository.findById(id);
-        if (existingVendorNames.isPresent()){
-            VendorNames updatedVendorName = existingVendorNames.get();
-            String oldVendorName = updatedVendorName.getVendorName();
-            updatedVendorName.setVendorName(vendorNames.getVendorName());
-            VendorNames saved = vendorNameRepository.save(updatedVendorName);
-
-            // update all ExpensesForm entries where same vendorName == oldVendorName
+    public VendorNames updateVendorNames(Long id, VendorNames vendorNames, MultipartFile file){
+        VendorNames existingVendor = vendorNameRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Vendor Name not found " + id));
+        String oldVendorName = existingVendor.getVendorName();
+        // Update fields
+        existingVendor.setVendorName(vendorNames.getVendorName());
+        existingVendor.setAccountHolderName(vendorNames.getAccountHolderName());
+        existingVendor.setAccountNumber(vendorNames.getAccountNumber());
+        existingVendor.setBankName(vendorNames.getBankName());
+        existingVendor.setIfscCode(vendorNames.getIfscCode());
+        existingVendor.setBranch(vendorNames.getBranch());
+        existingVendor.setUpiId(vendorNames.getUpiId());
+        existingVendor.setGpayNumber(vendorNames.getGpayNumber());
+        existingVendor.setContactNumber(vendorNames.getContactNumber());
+        existingVendor.setContactEmail(vendorNames.getContactEmail());
+        // Update QR image if provided
+        try {
+            if (file != null && !file.isEmpty()) {
+                existingVendor.setUpiQRImage(file.getBytes());
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to update QR image", e);
+        }
+        VendorNames saved = vendorNameRepository.save(existingVendor);
+        // Update related expenses if vendor name changed
+        if (!oldVendorName.equals(vendorNames.getVendorName())) {
             List<ExpensesForm> expensesWithOldVendorName = expensesRepo.findByVendor(oldVendorName);
             for (ExpensesForm expense : expensesWithOldVendorName) {
                 expense.setVendor(vendorNames.getVendorName());
             }
             expensesRepo.saveAll(expensesWithOldVendorName);
-            return saved;
-        } else {
-            throw new RuntimeException("Vendor Name not found"+ id );
         }
+        return saved;
     }
     public String uploadVendorNameData(MultipartFile file){
         if (file.isEmpty()){

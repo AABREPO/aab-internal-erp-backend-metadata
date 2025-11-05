@@ -28,14 +28,22 @@ public class ExpensesController {
             expensesForm.setTimestamp(LocalDateTime.now()); // Set the current date and time
             expensesForm.setDate(expensesFormDto.getDate());
             expensesForm.setSiteName(expensesFormDto.getSiteName());
+            expensesForm.setProjectId(expensesFormDto.getProjectId());
             expensesForm.setVendor(expensesFormDto.getVendor());
+            expensesForm.setVendorId(expensesFormDto.getVendorId());
             expensesForm.setQuantity(expensesFormDto.getQuantity());
             expensesForm.setContractor(expensesFormDto.getContractor());
+            expensesForm.setContractorId(expensesFormDto.getContractorId());
             expensesForm.setAmount(expensesFormDto.getAmount());
             expensesForm.setCategory(expensesFormDto.getCategory());
             expensesForm.setComments(expensesFormDto.getComments());
             expensesForm.setMachineTools(expensesFormDto.getMachineTools());
             expensesForm.setBillCopy(expensesFormDto.getBillCopyUrl());
+            expensesForm.setSource(expensesFormDto.getSource());
+            expensesForm.setUtilityType(expensesFormDto.getUtilityType());
+            expensesForm.setUtilityTypeNumber(expensesFormDto.getUtilityTypeNumber());
+            expensesForm.setUtilityForTheMonth(expensesFormDto.getUtilityForTheMonth());
+            expensesForm.setUtilityValidityDays(expensesFormDto.getUtilityValidityDays());
 
             expensesServices.saveForm(expensesForm);
             return ResponseEntity.status(HttpStatus.CREATED).body("Expenses Form submitted successfully");
@@ -53,7 +61,7 @@ public class ExpensesController {
             @PathVariable Long id,
             @RequestBody ExpensesEdit expensesEdit
     ) {
-        boolean isUpdated = expensesServices.updateExpense(id, expensesEdit); // ✅ only id and expensesEdit
+        boolean isUpdated = expensesServices.updateExpense(id, expensesEdit);
         if (isUpdated) {
             return ResponseEntity.ok("Expense updated successfully");
         } else {
@@ -71,10 +79,16 @@ public class ExpensesController {
             dto.setEditedDate(audit.getEditedDate());
             dto.setOldSiteName(audit.getOldSiteName());
             dto.setNewSiteName(audit.getNewSiteName());
+            dto.setOldProjectId(audit.getOldProjectId());
+            dto.setNewProjectId(audit.getNewProjectId());
             dto.setOldVendor(audit.getOldVendor());
             dto.setNewVendor(audit.getNewVendor());
+            dto.setOldVendorId(audit.getOldVendorId());
+            dto.setNewVendorId(audit.getNewVendorId());
             dto.setOldContractor(audit.getOldContractor());
             dto.setNewContractor(audit.getNewContractor());
+            dto.setOldContractorId(audit.getOldContractorId());
+            dto.setNewContractorId(audit.getNewContractorId());
             dto.setOldDate(audit.getOldDate());
             dto.setNewDate(audit.getNewDate());
             dto.setOldAccountType(audit.getOldAccountType());
@@ -103,5 +117,17 @@ public class ExpensesController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Expense not found.");
         }
+    }
+    @GetMapping("/utility/electricity")
+    public List<ExpensesForm> getElectricityUtilityBills() {
+        return expensesServices.getElectricityUtilityBills();
+    }
+    @GetMapping("/utility/property")
+    public List<ExpensesForm> getPropertyUtilityBills(){
+        return expensesServices.getPropertyUtilityBills();
+    }
+    @GetMapping("/utility/water")
+    public List<ExpensesForm> getWaterUtilityBills(){
+        return expensesServices.getWaterUtilityBills();
     }
 }

@@ -120,7 +120,7 @@ public class DailyEntryCheckListReportTask {
 
     // This is for get the missing checklistNumber pdf
     public void generateChecklistPdfFor880() {
-        int checklistNumber = 880; // 🔒 Hardcoded as requested
+        int checklistNumber = 921; // 🔒 Hardcoded as requested
         try {
             List<DailyChecklistEntry> entries = dailyChecklistEntryRepo.findByChecklistNumber(checklistNumber);
             if (entries.isEmpty()) {

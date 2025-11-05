@@ -15,10 +15,16 @@ public class ExpensesAudit {
     private LocalDateTime editedDate;
     private String oldSiteName;
     private String newSiteName;
+    private Long oldProjectId;
+    private Long newProjectId;
     private String oldVendor;
     private String newVendor;
+    private Long oldVendorId;
+    private Long newVendorId;
     private String oldContractor;
     private String newContractor;
+    private Long oldContractorId;
+    private Long newContractorId;
     private String oldDate;
     private String newDate;
     private String oldAccountType;
@@ -35,6 +41,19 @@ public class ExpensesAudit {
     private String newMachineTools;
     private String oldBillCopy;
     private String newBillCopy;
+    private String oldSource;
+    private String newSource;
+    private String oldPaymentMode;
+    private String newPaymentMode;
+    private String oldUtilityType;
+    private String newUtilityType;
+    private String oldUtilityTypeNumber;
+    private String newUtilityTypeNumber;
+    private String oldUtilityForTheMonth;
+    private String newUtilityForTheMonth;
+    private String oldUtilityValidityDays;
+    private String newUtilityValidityDays;
+
 
     // Getters and setters
 
@@ -86,6 +105,22 @@ public class ExpensesAudit {
         this.newSiteName = newSiteName;
     }
 
+    public Long getOldProjectId() {
+        return oldProjectId;
+    }
+
+    public void setOldProjectId(Long oldProjectId) {
+        this.oldProjectId = oldProjectId;
+    }
+
+    public Long getNewProjectId() {
+        return newProjectId;
+    }
+
+    public void setNewProjectId(Long newProjectId) {
+        this.newProjectId = newProjectId;
+    }
+
     public String getOldVendor() {
         return oldVendor;
     }
@@ -102,6 +137,22 @@ public class ExpensesAudit {
         this.newVendor = newVendor;
     }
 
+    public Long getOldVendorId() {
+        return oldVendorId;
+    }
+
+    public void setOldVendorId(Long oldVendorId) {
+        this.oldVendorId = oldVendorId;
+    }
+
+    public Long getNewVendorId() {
+        return newVendorId;
+    }
+
+    public void setNewVendorId(Long newVendorId) {
+        this.newVendorId = newVendorId;
+    }
+
     public String getOldContractor() {
         return oldContractor;
     }
@@ -116,6 +167,22 @@ public class ExpensesAudit {
 
     public void setNewContractor(String newContractor) {
         this.newContractor = newContractor;
+    }
+
+    public Long getOldContractorId() {
+        return oldContractorId;
+    }
+
+    public void setOldContractorId(Long oldContractorId) {
+        this.oldContractorId = oldContractorId;
+    }
+
+    public Long getNewContractorId() {
+        return newContractorId;
+    }
+
+    public void setNewContractorId(Long newContractorId) {
+        this.newContractorId = newContractorId;
     }
 
     public String getOldDate() {
@@ -244,5 +311,101 @@ public class ExpensesAudit {
 
     public void setNewBillCopy(String newBillCopy) {
         this.newBillCopy = newBillCopy;
+    }
+
+    public String getOldSource() {
+        return oldSource;
+    }
+
+    public void setOldSource(String oldSource) {
+        this.oldSource = oldSource;
+    }
+
+    public String getNewSource() {
+        return newSource;
+    }
+
+    public void setNewSource(String newSource) {
+        this.newSource = newSource;
+    }
+
+    public String getOldPaymentMode() {
+        return oldPaymentMode;
+    }
+
+    public void setOldPaymentMode(String oldPaymentMode) {
+        this.oldPaymentMode = oldPaymentMode;
+    }
+
+    public String getNewPaymentMode() {
+        return newPaymentMode;
+    }
+
+    public void setNewPaymentMode(String newPaymentMode) {
+        this.newPaymentMode = newPaymentMode;
+    }
+
+    public String getOldUtilityType() {
+        return oldUtilityType;
+    }
+
+    public void setOldUtilityType(String oldUtilityType) {
+        this.oldUtilityType = oldUtilityType;
+    }
+
+    public String getNewUtilityType() {
+        return newUtilityType;
+    }
+
+    public void setNewUtilityType(String newUtilityType) {
+        this.newUtilityType = newUtilityType;
+    }
+
+    public String getOldUtilityTypeNumber() {
+        return oldUtilityTypeNumber;
+    }
+
+    public void setOldUtilityTypeNumber(String oldUtilityTypeNumber) {
+        this.oldUtilityTypeNumber = oldUtilityTypeNumber;
+    }
+
+    public String getNewUtilityTypeNumber() {
+        return newUtilityTypeNumber;
+    }
+
+    public void setNewUtilityTypeNumber(String newUtilityTypeNumber) {
+        this.newUtilityTypeNumber = newUtilityTypeNumber;
+    }
+
+    public String getOldUtilityForTheMonth() {
+        return oldUtilityForTheMonth;
+    }
+
+    public void setOldUtilityForTheMonth(String oldUtilityForTheMonth) {
+        this.oldUtilityForTheMonth = oldUtilityForTheMonth;
+    }
+
+    public String getNewUtilityForTheMonth() {
+        return newUtilityForTheMonth;
+    }
+
+    public void setNewUtilityForTheMonth(String newUtilityForTheMonth) {
+        this.newUtilityForTheMonth = newUtilityForTheMonth;
+    }
+
+    public String getOldUtilityValidityDays() {
+        return oldUtilityValidityDays;
+    }
+
+    public void setOldUtilityValidityDays(String oldUtilityValidityDays) {
+        this.oldUtilityValidityDays = oldUtilityValidityDays;
+    }
+
+    public String getNewUtilityValidityDays() {
+        return newUtilityValidityDays;
+    }
+
+    public void setNewUtilityValidityDays(String newUtilityValidityDays) {
+        this.newUtilityValidityDays = newUtilityValidityDays;
     }
 }

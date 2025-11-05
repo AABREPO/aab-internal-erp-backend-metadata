@@ -58,7 +58,7 @@ public class SecurityConfig {
                                 ,"/api/project_Names/edit/**","/api/project_Names/delete/**","/api/vendor_Names/delete/**","/api/vendor_Names/edit/**","/api/contractor_Names/delete/**"
                                 ,"/api/contractor_Names/edit/**","/api/account_type/edit/**","/api/machine_tools/edit/**","/agreement/googleUploader/uploadToGoogleDrive","/api/user_roles/save"
                                 ,"/api/user_roles/all","/api/user_roles/edit/**","/api/roles/save","/api/roles/all","/rentForm/googleUploader/uploadToGoogleDrive"
-                                ,"/forward"
+                                ,"/forward","/expenses_form/utility/**","/api/projects/**","/api/frequency-history/**"
 
                         ).permitAll()
                         .anyRequest().authenticated()

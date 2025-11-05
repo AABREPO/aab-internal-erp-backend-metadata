@@ -16,9 +16,11 @@ public class ContractorNamesController {
     @Autowired
     private ContractorNameService contractorNameService;
 
-    @PostMapping("/save")
-    public ContractorNames saveContractorNames(@RequestBody ContractorNames contractorNames){
-        return contractorNameService.saveContractorName(contractorNames);
+    @PostMapping(value = "/save", consumes = {"multipart/form-data"})
+    public ContractorNames saveContractor(
+            @RequestPart("contractor") ContractorNames contractor,
+            @RequestPart(value = "file", required = false) MultipartFile file) {
+        return contractorNameService.saveContractorName(contractor, file);
     }
 
     @GetMapping("/getAll")
@@ -26,9 +28,12 @@ public class ContractorNamesController {
         return contractorNameService.getAllContractorNames();
     }
 
-    @PutMapping("/edit/{id}")
-    public ContractorNames updateContractor(@PathVariable Long id, @RequestBody ContractorNames contractorNames){
-        return contractorNameService.updateContractorNames(id, contractorNames);
+    @PutMapping(value = "/edit/{id}", consumes = {"multipart/form-data"})
+    public ContractorNames updateContractor(
+            @PathVariable Long id,
+            @RequestPart("contractor") ContractorNames contractor,
+            @RequestPart(value = "file", required = false) MultipartFile file) {
+        return contractorNameService.updateContractorNames(id, contractor, file);
     }
 
     @PostMapping("/bulk_upload")

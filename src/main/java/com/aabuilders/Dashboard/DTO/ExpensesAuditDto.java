@@ -10,10 +10,16 @@ public class ExpensesAuditDto {
     private LocalDateTime editedDate;
     private String oldSiteName;
     private String newSiteName;
+    private Long oldProjectId;
+    private Long newProjectId;
     private String oldVendor;
     private String newVendor;
+    private Long oldVendorId;
+    private Long newVendorId;
     private String oldContractor;
     private String newContractor;
+    private Long oldContractorId;
+    private Long newContractorId;
     private String oldDate;
     private String newDate;
     private String oldAccountType;
@@ -32,6 +38,7 @@ public class ExpensesAuditDto {
     private String newBillCopy;
 
     // Getters and setters
+
     public Long getId() {
         return id;
     }
@@ -80,6 +87,22 @@ public class ExpensesAuditDto {
         this.newSiteName = newSiteName;
     }
 
+    public Long getOldProjectId() {
+        return oldProjectId;
+    }
+
+    public void setOldProjectId(Long oldProjectId) {
+        this.oldProjectId = oldProjectId;
+    }
+
+    public Long getNewProjectId() {
+        return newProjectId;
+    }
+
+    public void setNewProjectId(Long newProjectId) {
+        this.newProjectId = newProjectId;
+    }
+
     public String getOldVendor() {
         return oldVendor;
     }
@@ -96,6 +119,22 @@ public class ExpensesAuditDto {
         this.newVendor = newVendor;
     }
 
+    public Long getOldVendorId() {
+        return oldVendorId;
+    }
+
+    public void setOldVendorId(Long oldVendorId) {
+        this.oldVendorId = oldVendorId;
+    }
+
+    public Long getNewVendorId() {
+        return newVendorId;
+    }
+
+    public void setNewVendorId(Long newVendorId) {
+        this.newVendorId = newVendorId;
+    }
+
     public String getOldContractor() {
         return oldContractor;
     }
@@ -110,6 +149,22 @@ public class ExpensesAuditDto {
 
     public void setNewContractor(String newContractor) {
         this.newContractor = newContractor;
+    }
+
+    public Long getOldContractorId() {
+        return oldContractorId;
+    }
+
+    public void setOldContractorId(Long oldContractorId) {
+        this.oldContractorId = oldContractorId;
+    }
+
+    public Long getNewContractorId() {
+        return newContractorId;
+    }
+
+    public void setNewContractorId(Long newContractorId) {
+        this.newContractorId = newContractorId;
     }
 
     public String getOldDate() {

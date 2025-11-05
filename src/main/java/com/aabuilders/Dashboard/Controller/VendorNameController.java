@@ -14,17 +14,22 @@ public class VendorNameController {
     @Autowired
     private VendorNameService vendorNameService;
 
-    @PostMapping("/save")
-    public VendorNames saveVendorNames(@RequestBody VendorNames vendorNames){
-        return vendorNameService.saveVendorName(vendorNames);
+    @PostMapping(value = "/save", consumes = {"multipart/form-data"})
+    public VendorNames saveVendorNames(
+            @RequestPart("vendor") VendorNames vendorNames,
+            @RequestPart(value = "file", required = false) MultipartFile file) {
+        return vendorNameService.saveVendorName(vendorNames, file);
     }
     @GetMapping("/getAll")
     public List<VendorNames> getAllVendorName(){
         return vendorNameService.getAllVendorNames();
     }
-    @PutMapping("/edit/{id}")
-    public VendorNames updateVendor(@PathVariable Long id, @RequestBody VendorNames vendorNames){
-        return vendorNameService.updateVendorNames(id, vendorNames);
+    @PutMapping(value = "/edit/{id}", consumes = {"multipart/form-data"})
+    public VendorNames updateVendor(
+            @PathVariable Long id,
+            @RequestPart("vendor") VendorNames vendorNames,
+            @RequestPart(value = "file", required = false) MultipartFile file) {
+        return vendorNameService.updateVendorNames(id, vendorNames, file);
     }
     @PostMapping("/bulk_upload")
     public String uploadVendorNameData(@RequestParam("file")MultipartFile file){

@@ -15,4 +15,11 @@ public interface ExpensesRepo extends JpaRepository<ExpensesForm, Long> {
     List<ExpensesForm> findBySpecificDate(@Param("date") LocalDate date);
     List<ExpensesForm> findBySiteName(String siteName);
     List<ExpensesForm> findByVendor(String vendor);
+    @Query("SELECT e FROM ExpensesForm e WHERE e.accountType = 'Utility Bills' AND e.utilityType = 'Electricity'")
+    List<ExpensesForm> findElectricityUtilityBills();
+    @Query("SELECT e FROM ExpensesForm e WHERE e.accountType = 'Utility Bills' AND e.utilityType = 'Property'")
+    List<ExpensesForm> findPropertyUtilityBills();
+    @Query("SELECT e FROM ExpensesForm e WHERE e.accountType = 'Utility Bills' AND e.utilityType = 'Water'")
+    List<ExpensesForm> findWaterUtilityBills();
+
 }
