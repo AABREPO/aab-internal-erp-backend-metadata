@@ -21,4 +21,5 @@ public class ProjectNamePropertyDetailsFrequencyHistory {
     private String startingMonthOfPropertyFrequency;
     private Long waterFrequencyNo;
     private String startingMonthOfWaterFrequency;
+
 }

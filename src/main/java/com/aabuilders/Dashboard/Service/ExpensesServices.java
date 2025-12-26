@@ -15,4 +15,8 @@ public interface ExpensesServices {
     List<ExpensesForm> getElectricityUtilityBills();
     List<ExpensesForm> getPropertyUtilityBills();
     List<ExpensesForm> getWaterUtilityBills();
+    List<ExpensesForm> getTelecomUtilityBills();
+    List<ExpensesForm> getSubscriptionUtilityBills();
+    List<ExpensesForm> getAmcUtilityBills();
+    ExpensesForm saveFormWithFixedTimestamp(ExpensesForm expensesForm);
 }

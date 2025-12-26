@@ -21,5 +21,11 @@ public interface ExpensesRepo extends JpaRepository<ExpensesForm, Long> {
     List<ExpensesForm> findPropertyUtilityBills();
     @Query("SELECT e FROM ExpensesForm e WHERE e.accountType = 'Utility Bills' AND e.utilityType = 'Water'")
     List<ExpensesForm> findWaterUtilityBills();
+    @Query("SELECT e FROM ExpensesForm e WHERE e.accountType = 'Utility Bills' AND e.utilityType = 'Telecom'")
+    List<ExpensesForm> findTelecomUtilityBills();
+    @Query("SELECT e FROM ExpensesForm e WHERE e.accountType = 'Utility Bills' AND e.utilityType = 'Subscription'")
+    List<ExpensesForm> findSubscriptionUtilityBills();
+    @Query("SELECT e FROM ExpensesForm e WHERE e.accountType = 'Utility Bills' AND e.utilityType = 'AMC'")
+    List<ExpensesForm> findAmcUtilityBills();
 
 }

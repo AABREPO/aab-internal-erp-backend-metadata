@@ -40,7 +40,7 @@ public class DailyEntryCheckListReportTask {
                 e.setDailyChecklistNo(String.valueOf(checklistNumber));
                 expensesRepo.save(e);
                 DailyChecklistEntry entry = new DailyChecklistEntry();
-                entry.setTimestamp(e.getTimestamp().plusMinutes(330));
+                entry.setTimestamp(e.getTimestamp());
                 entry.setDate(e.getDate());
                 entry.setSiteName(e.getSiteName());
                 entry.setVendor(e.getVendor());
@@ -74,7 +74,7 @@ public class DailyEntryCheckListReportTask {
     //This is for get the specific entry date data to generate pdf and get the new checklist number
     public void generateChecklistForYesterday() {
         try {
-            LocalDate targetDate = LocalDate.of(2025, 5, 1); // Can be made dynamic if needed
+            LocalDate targetDate = LocalDate.of(2025, 11, 22); // Can be made dynamic if needed
             System.out.println(targetDate + " Pdf Generation schedule is started!");
             int checklistNumber = driveUploadService.getNextChecklistNumber();
             List<ExpensesForm> entries = expensesRepo.findBySpecificDate(targetDate);
@@ -87,7 +87,7 @@ public class DailyEntryCheckListReportTask {
                 expensesRepo.save(e);
 
                 DailyChecklistEntry entry = new DailyChecklistEntry();
-                entry.setTimestamp(e.getTimestamp().plusMinutes(330));
+                entry.setTimestamp(e.getTimestamp());
                 entry.setDate(e.getDate());
                 entry.setSiteName(e.getSiteName());
                 entry.setVendor(e.getVendor());
@@ -120,7 +120,7 @@ public class DailyEntryCheckListReportTask {
 
     // This is for get the missing checklistNumber pdf
     public void generateChecklistPdfFor880() {
-        int checklistNumber = 921; // 🔒 Hardcoded as requested
+        int checklistNumber = 983; // 🔒 Hardcoded as requested
         try {
             List<DailyChecklistEntry> entries = dailyChecklistEntryRepo.findByChecklistNumber(checklistNumber);
             if (entries.isEmpty()) {
@@ -128,14 +128,14 @@ public class DailyEntryCheckListReportTask {
                 return;
             }
             byte[] pdfData = PdfGenerator.generateChecklistPdf(entries, checklistNumber);
-            String entryDate = entries.get(0).getTimestamp().toLocalDate().format(DateTimeFormatter.ofPattern("dd_MM_yyyy"));
+            String entryDate = entries.get(0).getTimestamp().minusMinutes(330).toLocalDate().format(DateTimeFormatter.ofPattern("dd_MM_yyyy"));
             String fileName = checklistNumber + "# Entry Checklist " + entryDate + ".pdf";
             Res response = driveUploadService.uploadPdfToDrive(new ByteArrayInputStream(pdfData), fileName);
             if (response.getStatus() == 200) {
                 String url = response.getUrl();
                 entries.forEach(entry -> entry.setEntryChecklistUrl(url));
                 dailyChecklistEntryRepo.saveAll(entries);
-                System.out.println("✅ PDF uploaded and URL updated for checklist 880: " + url);
+                System.out.println("✅ PDF uploaded and URL updated for checklist 980: " + url);
             } else {
                 System.err.println("❌ Upload failed: " + response.getMessage());
             }

@@ -19,6 +19,47 @@ import java.util.stream.Collectors;
 public class ExpensesController {
     @Autowired
     private ExpensesServices expensesServices;
+
+    @PostMapping("/save_fixed")
+    public ResponseEntity<String> addExpensesFormEntryWithFixedTimestamp(
+            @RequestBody ExpensesFormDto expensesFormDto) {
+        try {
+            ExpensesForm expensesForm = new ExpensesForm();
+            expensesForm.setAccountType(expensesFormDto.getAccountType());
+            expensesForm.setENo(expensesFormDto.getEno());
+            expensesForm.setDate(expensesFormDto.getDate());
+            expensesForm.setSiteName(expensesFormDto.getSiteName());
+            expensesForm.setProjectId(expensesFormDto.getProjectId());
+            expensesForm.setVendor(expensesFormDto.getVendor());
+            expensesForm.setVendorId(expensesFormDto.getVendorId());
+            expensesForm.setQuantity(expensesFormDto.getQuantity());
+            expensesForm.setContractor(expensesFormDto.getContractor());
+            expensesForm.setContractorId(expensesFormDto.getContractorId());
+            expensesForm.setEmployeeId(expensesFormDto.getEmployeeId());
+            expensesForm.setLabourId(expensesFormDto.getLabourId());
+            expensesForm.setAmount(expensesFormDto.getAmount());
+            expensesForm.setPaymentMode(expensesFormDto.getPaymentMode());
+            expensesForm.setCategory(expensesFormDto.getCategory());
+            expensesForm.setComments(expensesFormDto.getComments());
+            expensesForm.setMachineTools(expensesFormDto.getMachineTools());
+            expensesForm.setBillCopy(expensesFormDto.getBillCopyUrl());
+            expensesForm.setSource(expensesFormDto.getSource());
+            expensesForm.setUtilityType(expensesFormDto.getUtilityType());
+            expensesForm.setUtilityTypeNumber(expensesFormDto.getUtilityTypeNumber());
+            expensesForm.setUtilityForTheMonth(expensesFormDto.getUtilityForTheMonth());
+            expensesForm.setUtilityValidityDays(expensesFormDto.getUtilityValidityDays());
+
+            // Save with FIXED TIMESTAMP (30-11-2025)
+            expensesServices.saveFormWithFixedTimestamp(expensesForm);
+
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body("Expense saved successfully with fixed timestamp (30-11-2025).");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Invalid data or error while saving.");
+        }
+    }
+
     @PostMapping("/save")
     public ResponseEntity<String> addExpensesFormEntry(@RequestBody ExpensesFormDto expensesFormDto) {
         try {
@@ -34,7 +75,10 @@ public class ExpensesController {
             expensesForm.setQuantity(expensesFormDto.getQuantity());
             expensesForm.setContractor(expensesFormDto.getContractor());
             expensesForm.setContractorId(expensesFormDto.getContractorId());
+            expensesForm.setEmployeeId(expensesFormDto.getEmployeeId());
+            expensesForm.setLabourId(expensesFormDto.getLabourId());
             expensesForm.setAmount(expensesFormDto.getAmount());
+            expensesForm.setPaymentMode(expensesFormDto.getPaymentMode());
             expensesForm.setCategory(expensesFormDto.getCategory());
             expensesForm.setComments(expensesFormDto.getComments());
             expensesForm.setMachineTools(expensesFormDto.getMachineTools());
@@ -130,4 +174,17 @@ public class ExpensesController {
     public List<ExpensesForm> getWaterUtilityBills(){
         return expensesServices.getWaterUtilityBills();
     }
+    @GetMapping("/utility/telecom")
+    public List<ExpensesForm> getTelecomUtilityBills(){
+        return expensesServices.getTelecomUtilityBills();
+    }
+    @GetMapping("/utility/subscription")
+    public List<ExpensesForm> getSubscriptionUtilityBills(){
+        return expensesServices.getSubscriptionUtilityBills();
+    }
+    @GetMapping("/utility/amc")
+    public List<ExpensesForm> getAmcUtilityBills(){
+        return expensesServices.getAmcUtilityBills();
+    }
+
 }

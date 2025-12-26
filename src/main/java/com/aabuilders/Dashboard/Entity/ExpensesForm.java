@@ -22,6 +22,8 @@ public class ExpensesForm {
     private String quantity;
     private String contractor;
     private Long contractorId;
+    private Long employeeId;
+    private Long labourId;
     private int amount;
     private String category;
     private String comments;
@@ -125,6 +127,22 @@ public class ExpensesForm {
 
     public Long getContractorId() {
         return contractorId;
+    }
+
+    public Long getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(Long employeeId) {
+        this.employeeId = employeeId;
+    }
+
+    public Long getLabourId() {
+        return labourId;
+    }
+
+    public void setLabourId(Long labourId) {
+        this.labourId = labourId;
     }
 
     public void setContractorId(Long contractorId) {

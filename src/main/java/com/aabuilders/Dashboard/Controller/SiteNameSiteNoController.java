@@ -41,4 +41,9 @@ public class SiteNameSiteNoController {
         siteNameSiteNoService.deleteSiteNames(id);
         return "SiteName deleted Successfully!!!";
     }
+
+    @PutMapping("/{id}/stocking-location")
+    public SiteNamesWithSiteNo updateStockingLocation( @PathVariable Long id, @RequestParam boolean markedAsStockingLocation) {
+        return siteNameSiteNoService.updateStockingLocationStatus(id, markedAsStockingLocation);
+    }
 }

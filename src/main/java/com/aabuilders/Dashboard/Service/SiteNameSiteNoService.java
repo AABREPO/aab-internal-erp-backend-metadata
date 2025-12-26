@@ -42,6 +42,7 @@ public class SiteNameSiteNoService {
 
             updatedSiteNames.setSiteName(siteNamesWithSiteNo.getSiteName());
             updatedSiteNames.setSiteNo(siteNamesWithSiteNo.getSiteNo());
+            updatedSiteNames.setBranch(siteNamesWithSiteNo.getBranch());
             SiteNamesWithSiteNo saved = siteNameWithSiteNoRepository.save(updatedSiteNames);
 
             // 🔄 Update all ExpensesForm entries where siteName == oldSiteName
@@ -122,4 +123,14 @@ public class SiteNameSiteNoService {
     public void deleteSiteNames(Long id){
         siteNameWithSiteNoRepository.deleteById(id);
     }
+
+    @Transactional
+    public SiteNamesWithSiteNo updateStockingLocationStatus(Long id, boolean markedAsStockingLocation) {
+        SiteNamesWithSiteNo site = siteNameWithSiteNoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Site not found with id: " + id));
+
+        site.setMarkedAsStockingLocation(markedAsStockingLocation);
+        return siteNameWithSiteNoRepository.save(site);
+    }
+
 }

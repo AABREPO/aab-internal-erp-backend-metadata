@@ -50,7 +50,7 @@ public class ProjectNameWithAllOtherDetailsService {
                     existing.setProjectId(updatedProject.getProjectId());
                     existing.setProjectCategory(updatedProject.getProjectCategory());
                     existing.setProjectReferenceName(updatedProject.getProjectReferenceName());
-
+                    existing.setBranch(updatedProject.getBranch());
                     // --- Replace owner details ---
                     existing.getOwnerDetails().clear();
                     if (updatedProject.getOwnerDetails() != null) {

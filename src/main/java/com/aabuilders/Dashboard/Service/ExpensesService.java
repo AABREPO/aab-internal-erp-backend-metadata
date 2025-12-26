@@ -27,6 +27,15 @@ public class ExpensesService implements ExpensesServices {
     }
 
     @Override
+    public ExpensesForm saveFormWithFixedTimestamp(ExpensesForm expensesForm) {
+        // Fixed timestamp: 30-11-2025 at 10:30 AM
+        LocalDateTime fixedTimestamp = LocalDateTime.of(2025, 11, 30, 10, 30);
+        expensesForm.setTimestamp(fixedTimestamp);
+
+        return expensesRepo.save(expensesForm);
+    }
+
+    @Override
     public List<ExpensesForm> getAllEntries() {
         return expensesRepo.findAll();
     }
@@ -263,5 +272,16 @@ public class ExpensesService implements ExpensesServices {
     public List<ExpensesForm> getWaterUtilityBills(){
         return expensesRepo.findWaterUtilityBills();
     }
-
+    @Override
+    public List<ExpensesForm> getTelecomUtilityBills(){
+        return expensesRepo.findTelecomUtilityBills();
+    }
+    @Override
+    public List<ExpensesForm> getSubscriptionUtilityBills(){
+        return expensesRepo.findSubscriptionUtilityBills();
+    }
+    @Override
+    public List<ExpensesForm> getAmcUtilityBills(){
+        return expensesRepo.findAmcUtilityBills();
+    }
 }

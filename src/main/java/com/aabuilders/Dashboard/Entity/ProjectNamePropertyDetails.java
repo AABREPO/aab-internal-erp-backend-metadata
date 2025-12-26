@@ -19,6 +19,7 @@ public class ProjectNamePropertyDetails {
     private String doorNo;
     private String area;
     private String ebNo;
+    private String ebNoPhase;
     private String ebNoFrequency;
     private String propertyTaxNo;
     private String propertyTaxFrequency;

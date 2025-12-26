@@ -20,6 +20,7 @@ public class ProjectNameWithAllOtherDetails {
     private String projectId;
     private String projectCategory;
     private String projectReferenceName;
+    private String branch;
     private boolean isHide;
     @OneToMany(mappedBy = "projectNameWithAllOtherDetails", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ProjectNameOwnerDetails> ownerDetails;

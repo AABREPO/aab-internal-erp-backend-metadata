@@ -16,6 +16,8 @@ public class ExpensesFormDto {
     private String quantity;
     private String contractor;
     private Long contractorId;
+    private Long employeeId;
+    private Long labourId;
     private int amount;
     private String category;
     private String comments;
@@ -26,6 +28,7 @@ public class ExpensesFormDto {
     private String utilityTypeNumber;
     private String utilityForTheMonth;
     private String utilityValidityDays;
+    private String paymentMode;
 
     public String getAccountType() {
         return accountType;
@@ -107,6 +110,22 @@ public class ExpensesFormDto {
         this.contractorId = contractorId;
     }
 
+    public Long getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(Long employeeId) {
+        this.employeeId = employeeId;
+    }
+
+    public Long getLabourId() {
+        return labourId;
+    }
+
+    public void setLabourId(Long labourId) {
+        this.labourId = labourId;
+    }
+
     public int getAmount() {
         return amount;
     }
@@ -185,5 +204,13 @@ public class ExpensesFormDto {
 
     public void setUtilityValidityDays(String utilityValidityDays) {
         this.utilityValidityDays = utilityValidityDays;
+    }
+
+    public String getPaymentMode() {
+        return paymentMode;
+    }
+
+    public void setPaymentMode(String paymentMode) {
+        this.paymentMode = paymentMode;
     }
 }

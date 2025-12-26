@@ -58,7 +58,7 @@ public class SecurityConfig {
                                 ,"/api/project_Names/edit/**","/api/project_Names/delete/**","/api/vendor_Names/delete/**","/api/vendor_Names/edit/**","/api/contractor_Names/delete/**"
                                 ,"/api/contractor_Names/edit/**","/api/account_type/edit/**","/api/machine_tools/edit/**","/agreement/googleUploader/uploadToGoogleDrive","/api/user_roles/save"
                                 ,"/api/user_roles/all","/api/user_roles/edit/**","/api/roles/save","/api/roles/all","/rentForm/googleUploader/uploadToGoogleDrive"
-                                ,"/forward","/expenses_form/utility/**","/api/projects/**","/api/frequency-history/**"
+                                ,"/forward","/expenses_form/utility/**","/api/projects/**","/api/frequency-history/**","/expenses_form/save_fixed","/api/project_Names/{id}/stocking-location"
 
                         ).permitAll()
                         .anyRequest().authenticated()
@@ -69,7 +69,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedOriginPattern("*"); // Allow all origins
-        configuration.setAllowedOrigins(List.of("http://localhost:3000","http://localhost:5173", "https://dashboard.aabuilders.in"));
+        configuration.setAllowedOrigins(List.of("http://localhost:3000","http://localhost:5173", "https://dashboard.aabuilders.in", "https://po.aabuilders.in"));
         configuration.setAllowCredentials(true); // Needed for cookies/auth headers
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList(
