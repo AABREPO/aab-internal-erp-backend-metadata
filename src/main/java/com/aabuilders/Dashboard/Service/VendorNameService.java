@@ -37,6 +37,10 @@ public class VendorNameService {
         return vendorNameRepository.findAll();
     }
 
+    public Optional<VendorNames> getVendorNameById(Long id){
+        return vendorNameRepository.findById(id);
+    }
+
     public VendorNames updateVendorNames(Long id, VendorNames vendorNames, MultipartFile file){
         VendorNames existingVendor = vendorNameRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Vendor Name not found " + id));

@@ -32,6 +32,10 @@ public class SiteNameSiteNoService {
         return siteNameWithSiteNoRepository.findAll();
     }
 
+    public Optional<SiteNamesWithSiteNo> getSiteNameById(Long id){
+        return siteNameWithSiteNoRepository.findById(id);
+    }
+
     public SiteNamesWithSiteNo updateSiteNamesWithSiteNo(Long id, SiteNamesWithSiteNo siteNamesWithSiteNo){
         Optional<SiteNamesWithSiteNo> existingSiteData = siteNameWithSiteNoRepository.findById(id);
 

@@ -3,6 +3,7 @@ package com.aabuilders.Dashboard.Controller;
 import com.aabuilders.Dashboard.Entity.VendorNames;
 import com.aabuilders.Dashboard.Service.VendorNameService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,6 +31,12 @@ public class VendorNameController {
             @RequestPart("vendor") VendorNames vendorNames,
             @RequestPart(value = "file", required = false) MultipartFile file) {
         return vendorNameService.updateVendorNames(id, vendorNames, file);
+    }
+    @GetMapping("/get/{id}")
+    public ResponseEntity<VendorNames> getVendorNameById(@PathVariable Long id){
+        return vendorNameService.getVendorNameById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
     @PostMapping("/bulk_upload")
     public String uploadVendorNameData(@RequestParam("file")MultipartFile file){

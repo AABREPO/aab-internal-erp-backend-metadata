@@ -23,6 +23,12 @@ public class SiteNameSiteNoController {
     public List<SiteNamesWithSiteNo> getAllSiteName(){
         return siteNameSiteNoService.getAllSiteNameWithSiteNo();
     }
+    @GetMapping("/get/{id}")
+    public ResponseEntity<SiteNamesWithSiteNo> getSiteWithId(@PathVariable Long id){
+        return siteNameSiteNoService.getSiteNameById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
     @PutMapping("/edit/{id}")
     public SiteNamesWithSiteNo updateSiteNameWithSiteNo(@PathVariable Long id, @RequestBody SiteNamesWithSiteNo siteNamesWithSiteNo){
         return siteNameSiteNoService.updateSiteNamesWithSiteNo(id, siteNamesWithSiteNo);
@@ -41,7 +47,6 @@ public class SiteNameSiteNoController {
         siteNameSiteNoService.deleteSiteNames(id);
         return "SiteName deleted Successfully!!!";
     }
-
     @PutMapping("/{id}/stocking-location")
     public SiteNamesWithSiteNo updateStockingLocation( @PathVariable Long id, @RequestParam boolean markedAsStockingLocation) {
         return siteNameSiteNoService.updateStockingLocationStatus(id, markedAsStockingLocation);
