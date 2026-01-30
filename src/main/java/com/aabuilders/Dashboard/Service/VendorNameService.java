@@ -132,4 +132,13 @@ public class VendorNameService {
     public void deleteVendorName(Long id){
         vendorNameRepository.deleteById(id);
     }
+
+    @Transactional
+    public VendorNames updateServiceShopStatus(Long id, boolean makeAsServiceShop) {
+        VendorNames vendor = vendorNameRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Site not found with id: " + id));
+
+        vendor.setMakeAsServiceShop(makeAsServiceShop);
+        return vendorNameRepository.save(vendor);
+    }
 }

@@ -31,6 +31,7 @@ public class VendorNames {
     @Column(name = "upi_qr_image", columnDefinition = "LONGBLOB")
     @JsonProperty("upi_qr_image")
     private byte[] upiQRImage;
+    private boolean makeAsServiceShop;
 
     public Long getId() {
         return id;
@@ -126,5 +127,13 @@ public class VendorNames {
 
     public void setUpiQRImage(byte[] upiQRImage) {
         this.upiQRImage = upiQRImage;
+    }
+
+    public boolean isMakeAsServiceShop() {
+        return makeAsServiceShop;
+    }
+
+    public void setMakeAsServiceShop(boolean makeAsServiceShop) {
+        this.makeAsServiceShop = makeAsServiceShop;
     }
 }

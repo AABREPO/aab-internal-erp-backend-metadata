@@ -51,4 +51,8 @@ public class VendorNameController {
         vendorNameService.deleteAllVendorNames();
         return "All Vendor Name deleted";
     }
+    @PutMapping("/{id}/make-store")
+    public VendorNames updateMakeAsServiceStore(@PathVariable Long id, @RequestParam boolean makeAsServiceStore){
+        return vendorNameService.updateServiceShopStatus(id, makeAsServiceStore);
+    }
 }
