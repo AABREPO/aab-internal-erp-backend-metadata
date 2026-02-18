@@ -24,6 +24,9 @@ public class ExpensesController {
     public ResponseEntity<String> addExpensesFormEntryWithFixedTimestamp(
             @RequestBody ExpensesFormDto expensesFormDto) {
         try {
+            if (expensesFormDto.getBranchId() == null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("branchId is required");
+            }
             ExpensesForm expensesForm = new ExpensesForm();
             expensesForm.setAccountType(expensesFormDto.getAccountType());
             expensesForm.setENo(expensesFormDto.getEno());
@@ -50,7 +53,7 @@ public class ExpensesController {
             expensesForm.setUtilityValidityDays(expensesFormDto.getUtilityValidityDays());
 
             // Save with FIXED TIMESTAMP (30-11-2025)
-            expensesServices.saveFormWithFixedTimestamp(expensesForm);
+            expensesServices.saveFormWithFixedTimestamp(expensesForm, expensesFormDto.getBranchId());
 
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body("Expense saved successfully with fixed timestamp (30-11-2025).");
@@ -63,6 +66,9 @@ public class ExpensesController {
     @PostMapping("/save")
     public ResponseEntity<String> addExpensesFormEntry(@RequestBody ExpensesFormDto expensesFormDto) {
         try {
+            if (expensesFormDto.getBranchId() == null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("branchId is required");
+            }
             ExpensesForm expensesForm = new ExpensesForm();
             expensesForm.setAccountType(expensesFormDto.getAccountType());
             expensesForm.setENo(expensesFormDto.getEno());
@@ -89,23 +95,24 @@ public class ExpensesController {
             expensesForm.setUtilityForTheMonth(expensesFormDto.getUtilityForTheMonth());
             expensesForm.setUtilityValidityDays(expensesFormDto.getUtilityValidityDays());
 
-            expensesServices.saveForm(expensesForm);
+            expensesServices.saveForm(expensesForm, expensesFormDto.getBranchId());
             return ResponseEntity.status(HttpStatus.CREATED).body("Expenses Form submitted successfully");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid data format or other error");
         }
     }
     @GetMapping("/get_form")
-    public ResponseEntity<List<ExpensesForm>> getAllExpensesFormEntry() {
-        List<ExpensesForm> expensesFormsEntries = expensesServices.getAllEntries();
+    public ResponseEntity<List<ExpensesForm>> getAllExpensesFormEntry(@RequestParam Long branchId) {
+        List<ExpensesForm> expensesFormsEntries = expensesServices.getAllEntries(branchId);
         return ResponseEntity.ok().body(expensesFormsEntries);
     }
     @PutMapping("/update/{id}")
     public ResponseEntity<String> updateExpense(
             @PathVariable Long id,
+            @RequestParam Long branchId,
             @RequestBody ExpensesEdit expensesEdit
     ) {
-        boolean isUpdated = expensesServices.updateExpense(id, expensesEdit);
+        boolean isUpdated = expensesServices.updateExpense(id, branchId, expensesEdit);
         if (isUpdated) {
             return ResponseEntity.ok("Expense updated successfully");
         } else {

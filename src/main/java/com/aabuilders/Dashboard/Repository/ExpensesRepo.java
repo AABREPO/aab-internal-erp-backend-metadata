@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface ExpensesRepo extends JpaRepository<ExpensesForm, Long> {
     @Query("SELECT e FROM ExpensesForm e WHERE FUNCTION('DATE', e.timestamp) = CURRENT_DATE")
@@ -15,6 +16,8 @@ public interface ExpensesRepo extends JpaRepository<ExpensesForm, Long> {
     List<ExpensesForm> findBySpecificDate(@Param("date") LocalDate date);
     List<ExpensesForm> findBySiteName(String siteName);
     List<ExpensesForm> findByVendor(String vendor);
+    List<ExpensesForm> findByBranchId(Long branchId);
+    Optional<ExpensesForm> findByIdAndBranchId(Long id, Long branchId);
     @Query("SELECT e FROM ExpensesForm e WHERE e.accountType = 'Utility Bills' AND e.utilityType = 'Electricity'")
     List<ExpensesForm> findElectricityUtilityBills();
     @Query("SELECT e FROM ExpensesForm e WHERE e.accountType = 'Utility Bills' AND e.utilityType = 'Property'")

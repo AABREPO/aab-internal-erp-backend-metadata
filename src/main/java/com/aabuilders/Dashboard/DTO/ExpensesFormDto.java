@@ -29,6 +29,7 @@ public class ExpensesFormDto {
     private String utilityForTheMonth;
     private String utilityValidityDays;
     private String paymentMode;
+    private Long branchId;
 
     public String getAccountType() {
         return accountType;
@@ -212,5 +213,13 @@ public class ExpensesFormDto {
 
     public void setPaymentMode(String paymentMode) {
         this.paymentMode = paymentMode;
+    }
+
+    public Long getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(Long branchId) {
+        this.branchId = branchId;
     }
 }

@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -22,27 +21,29 @@ public class ExpensesService implements ExpensesServices {
     private ExpensesAuditRepo expensesAuditRepo;
 
     @Override
-    public ExpensesForm saveForm(ExpensesForm expensesForm) {
+    public ExpensesForm saveForm(ExpensesForm expensesForm, Long branchId) {
+        expensesForm.setBranchId(branchId);
         return expensesRepo.save(expensesForm);
     }
 
     @Override
-    public ExpensesForm saveFormWithFixedTimestamp(ExpensesForm expensesForm) {
+    public ExpensesForm saveFormWithFixedTimestamp(ExpensesForm expensesForm, Long branchId) {
         // Fixed timestamp: 30-11-2025 at 10:30 AM
         LocalDateTime fixedTimestamp = LocalDateTime.of(2025, 11, 30, 10, 30);
         expensesForm.setTimestamp(fixedTimestamp);
+        expensesForm.setBranchId(branchId);
 
         return expensesRepo.save(expensesForm);
     }
 
     @Override
-    public List<ExpensesForm> getAllEntries() {
-        return expensesRepo.findAll();
+    public List<ExpensesForm> getAllEntries(Long branchId) {
+        return expensesRepo.findByBranchId(branchId);
     }
 
     @Override
-    public boolean updateExpense(Long id, ExpensesEdit expensesEdit) {
-        Optional<ExpensesForm> optionalExpense = expensesRepo.findById(id);
+    public boolean updateExpense(Long id, Long branchId, ExpensesEdit expensesEdit) {
+        Optional<ExpensesForm> optionalExpense = expensesRepo.findByIdAndBranchId(id, branchId);
         if (optionalExpense.isPresent()) {
             ExpensesForm existingExpense = optionalExpense.get();
             String editedBy = expensesEdit.getEditedBy();
@@ -70,6 +71,7 @@ public class ExpensesService implements ExpensesServices {
             existingExpense.setUtilityForTheMonth(expensesEdit.getUtilityForTheMonth());
             existingExpense.setUtilityValidityDays(expensesEdit.getUtilityValidityDays());
             existingExpense.setBillCopy(expensesEdit.getBillCopy());
+            existingExpense.setBranchId(branchId);
 
             expensesRepo.save(existingExpense);
             return true;

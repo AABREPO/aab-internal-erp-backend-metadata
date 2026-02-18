@@ -2,6 +2,7 @@
 
 package com.aabuilders.Dashboard.Entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -27,6 +28,7 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "user_user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<UserRoles> userRoles;
+    private Long branchId;
 
     // Getters and Setters
     public Long getId() {
@@ -91,5 +93,13 @@ public class User {
 
     public void setUserRoles(List<UserRoles> userRoles) {
         this.userRoles = userRoles;
+    }
+
+    public Long getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(Long branchId) {
+        this.branchId = branchId;
     }
 }
