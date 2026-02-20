@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface ExpensesServices {
     ExpensesForm saveForm(ExpensesForm expensesForm, Long branchId);
-    List<ExpensesForm> getAllEntries(Long branchId);
-    boolean updateExpense(Long id, Long branchId, ExpensesEdit expensesEdit);
+    List<ExpensesForm> getAllEntries();
+    boolean updateExpense(Long id, ExpensesEdit expensesEdit);
     List<ExpensesAudit> getAllAuditsByExpenseId(Long expenseId);
     boolean clearExpenseData(Long id, String editedBy);
     List<ExpensesForm> getElectricityUtilityBills();

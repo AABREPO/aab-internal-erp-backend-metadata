@@ -37,13 +37,13 @@ public class ExpensesService implements ExpensesServices {
     }
 
     @Override
-    public List<ExpensesForm> getAllEntries(Long branchId) {
-        return expensesRepo.findByBranchId(branchId);
+    public List<ExpensesForm> getAllEntries() {
+        return expensesRepo.findAll();
     }
 
     @Override
-    public boolean updateExpense(Long id, Long branchId, ExpensesEdit expensesEdit) {
-        Optional<ExpensesForm> optionalExpense = expensesRepo.findByIdAndBranchId(id, branchId);
+    public boolean updateExpense(Long id, ExpensesEdit expensesEdit) {
+        Optional<ExpensesForm> optionalExpense = expensesRepo.findById(id);
         if (optionalExpense.isPresent()) {
             ExpensesForm existingExpense = optionalExpense.get();
             String editedBy = expensesEdit.getEditedBy();
@@ -71,7 +71,6 @@ public class ExpensesService implements ExpensesServices {
             existingExpense.setUtilityForTheMonth(expensesEdit.getUtilityForTheMonth());
             existingExpense.setUtilityValidityDays(expensesEdit.getUtilityValidityDays());
             existingExpense.setBillCopy(expensesEdit.getBillCopy());
-            existingExpense.setBranchId(branchId);
 
             expensesRepo.save(existingExpense);
             return true;

@@ -102,17 +102,16 @@ public class ExpensesController {
         }
     }
     @GetMapping("/get_form")
-    public ResponseEntity<List<ExpensesForm>> getAllExpensesFormEntry(@RequestParam Long branchId) {
-        List<ExpensesForm> expensesFormsEntries = expensesServices.getAllEntries(branchId);
+    public ResponseEntity<List<ExpensesForm>> getAllExpensesFormEntry() {
+        List<ExpensesForm> expensesFormsEntries = expensesServices.getAllEntries();
         return ResponseEntity.ok().body(expensesFormsEntries);
     }
     @PutMapping("/update/{id}")
     public ResponseEntity<String> updateExpense(
             @PathVariable Long id,
-            @RequestParam Long branchId,
             @RequestBody ExpensesEdit expensesEdit
     ) {
-        boolean isUpdated = expensesServices.updateExpense(id, branchId, expensesEdit);
+        boolean isUpdated = expensesServices.updateExpense(id, expensesEdit); // ✅ only id and expensesEdit
         if (isUpdated) {
             return ResponseEntity.ok("Expense updated successfully");
         } else {
