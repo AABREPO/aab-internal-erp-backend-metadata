@@ -1,18 +1,36 @@
 package com.aabuilders.Dashboard.Service;
 
 import com.aabuilders.Dashboard.DTO.ExpensesEdit;
+import com.aabuilders.Dashboard.DTO.ExpensesFilterDto;
 import com.aabuilders.Dashboard.Entity.ExpensesAudit;
 import com.aabuilders.Dashboard.Entity.ExpensesForm;
 import com.aabuilders.Dashboard.Repository.ExpensesAuditRepo;
+import com.aabuilders.Dashboard.Repository.ExpensesFormSpecification;
 import com.aabuilders.Dashboard.Repository.ExpensesRepo;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
+
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
 public class ExpensesService implements ExpensesServices {
+
+    private static final int RECENT_LIMIT = 200;
+    private static final int CHUNK_SIZE = 500;
+    private static final int CHUNK_DELAY_MS = 100;
 
     @Autowired
     private ExpensesRepo expensesRepo;
@@ -20,9 +38,17 @@ public class ExpensesService implements ExpensesServices {
     @Autowired
     private ExpensesAuditRepo expensesAuditRepo;
 
+    @Transactional
     @Override
     public ExpensesForm saveForm(ExpensesForm expensesForm, Long branchId) {
+
+        Long maxEno = expensesRepo.findMaxEnoForUpdate();
+
+        Long nextEno = (maxEno == null) ? 1 : maxEno + 1;
+
+        expensesForm.setENo(nextEno); // ⚠️ correct setter
         expensesForm.setBranchId(branchId);
+
         return expensesRepo.save(expensesForm);
     }
 
@@ -39,6 +65,75 @@ public class ExpensesService implements ExpensesServices {
     @Override
     public List<ExpensesForm> getAllEntries() {
         return expensesRepo.findAll();
+    }
+
+    @Override
+    public List<ExpensesForm> getLast400Entries() {
+        return expensesRepo.findTop400ByOrderByIdDesc();
+    }
+
+    @Override
+    public StreamingResponseBody streamFilteredExpenses(ExpensesFilterDto filter) {
+        return outputStream -> {
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.registerModule(new JavaTimeModule());
+            mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
+            Specification<ExpensesForm> spec = ExpensesFormSpecification.fromFilter(filter);
+            Sort sort = Sort.by(Sort.Direction.DESC, "Id");
+
+            List<ExpensesForm> recent = expensesRepo.findFilteredPage(spec, 0, RECENT_LIMIT, sort);
+            long totalCount = expensesRepo.countFiltered(spec);
+
+            writeStreamLine(outputStream, mapper, streamPayload("recent", recent, totalCount, 0));
+            outputStream.flush();
+
+            int offset = RECENT_LIMIT;
+            List<ExpensesForm> chunk;
+            int chunkIndex = 1;
+            try {
+                do {
+                    chunk = expensesRepo.findFilteredPage(spec, offset, CHUNK_SIZE, sort);
+                    if (!chunk.isEmpty()) {
+                        writeStreamLine(outputStream, mapper, streamPayload("chunk", chunk, totalCount, chunkIndex));
+                        outputStream.flush();
+                        Thread.sleep(CHUNK_DELAY_MS);
+                        chunkIndex++;
+                    }
+                    offset += CHUNK_SIZE;
+                } while (chunk.size() == CHUNK_SIZE);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw new java.io.IOException("Expense filter streaming interrupted", e);
+            }
+
+            writeStreamLine(outputStream, mapper, Map.of(
+                    "type", "complete",
+                    "totalCount", totalCount
+            ));
+            outputStream.flush();
+        };
+    }
+
+    private Map<String, Object> streamPayload(String type, List<ExpensesForm> data, long totalCount, int chunkIndex) {
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("type", type);
+        payload.put("data", data);
+        payload.put("totalCount", totalCount);
+        if ("chunk".equals(type)) {
+            payload.put("chunkIndex", chunkIndex);
+        }
+        return payload;
+    }
+
+    private void writeStreamLine(OutputStream outputStream, ObjectMapper mapper, Object payload) throws java.io.IOException {
+        outputStream.write(mapper.writeValueAsString(payload).getBytes(StandardCharsets.UTF_8));
+        outputStream.write('\n');
+    }
+
+    @Override
+    public List<ExpensesAudit> getAllAuditsEntries(){
+        return expensesAuditRepo.findAll();
     }
 
     @Override
@@ -60,6 +155,7 @@ public class ExpensesService implements ExpensesServices {
             existingExpense.setQuantity(expensesEdit.getQuantity());
             existingExpense.setContractor(expensesEdit.getContractor());
             existingExpense.setContractorId(expensesEdit.getContractorId());
+            existingExpense.setAccountTypeId(expensesEdit.getAccountTypeId());
             existingExpense.setAmount(expensesEdit.getAmount());
             existingExpense.setCategory(expensesEdit.getCategory());
             existingExpense.setComments(expensesEdit.getComments());
@@ -70,6 +166,9 @@ public class ExpensesService implements ExpensesServices {
             existingExpense.setUtilityTypeNumber(expensesEdit.getUtilityTypeNumber());
             existingExpense.setUtilityForTheMonth(expensesEdit.getUtilityForTheMonth());
             existingExpense.setUtilityValidityDays(expensesEdit.getUtilityValidityDays());
+            existingExpense.setUtilityValidityType(expensesEdit.getUtilityValidityType());
+            existingExpense.setServiceStartingDate(expensesEdit.getServiceStartingDate());
+            existingExpense.setBillArrivalDate(expensesEdit.getBillArrivalDate());
             existingExpense.setBillCopy(expensesEdit.getBillCopy());
 
             expensesRepo.save(existingExpense);
@@ -101,6 +200,10 @@ public class ExpensesService implements ExpensesServices {
         audit.setNewContractor(newData.getContractor());
         audit.setOldContractorId(oldData.getContractorId());
         audit.setNewContractorId(newData.getContractorId());
+        audit.setOldEmployeeId(oldData.getEmployeeId());
+        audit.setNewEmployeeId(newData.getEmployeeId());
+        audit.setOldLabourId(oldData.getLabourId());
+        audit.setNewLabourId(newData.getLabourId());
         audit.setOldAmount(oldData.getAmount() != 0 ? String.valueOf(oldData.getAmount()) : null);
         audit.setNewAmount(newData.getAmount() != 0 ? String.valueOf(newData.getAmount()) : null);
         audit.setOldAccountType(oldData.getAccountType());
@@ -129,7 +232,14 @@ public class ExpensesService implements ExpensesServices {
         audit.setNewUtilityForTheMonth(newData.getUtilityForTheMonth());
         audit.setOldUtilityValidityDays(oldData.getUtilityValidityDays());
         audit.setNewUtilityValidityDays(newData.getUtilityValidityDays());
-
+        audit.setOldUtilityValidityType(oldData.getUtilityValidityType());
+        audit.setNewUtilityValidityType(newData.getUtilityValidityType());
+        audit.setOldServiceStartingDate(oldData.getServiceStartingDate());
+        audit.setNewServiceStartingDate(newData.getServiceStartingDate());
+        audit.setOldBillArrivalDate(oldData.getBillArrivalDate());
+        audit.setNewBillArrivalDate(newData.getBillArrivalDate());
+        audit.setOldAccountTypeId(oldData.getAccountTypeId());
+        audit.setNewAccountTypeId(newData.getAccountTypeId());
         expensesAuditRepo.save(audit);
     }
 
@@ -143,11 +253,6 @@ public class ExpensesService implements ExpensesServices {
             audit.setEditedBy(editedBy);
             audit.setEditedDate(LocalDateTime.now());
             // Audit + Clear fields
-            if (existingExpense.getAccountType() != null) {
-                audit.setOldAccountType(existingExpense.getAccountType());
-                audit.setNewAccountType(null);
-                existingExpense.setAccountType(null);
-            }
             if (existingExpense.getSiteName() != null) {
                 audit.setOldSiteName(existingExpense.getSiteName());
                 audit.setNewSiteName(null);
@@ -183,6 +288,21 @@ public class ExpensesService implements ExpensesServices {
                 audit.setNewContractorId(null);
                 existingExpense.setContractorId(null);
             }
+            if (existingExpense.getEmployeeId() !=null){
+                audit.setOldEmployeeId(existingExpense.getEmployeeId());
+                audit.setNewEmployeeId(null);
+                existingExpense.setEmployeeId(null);
+            }
+            if (existingExpense.getLabourId() !=null){
+                audit.setOldLabourId(existingExpense.getLabourId());
+                audit.setNewLabourId(null);
+                existingExpense.setLabourId(null);
+            }
+            if (existingExpense.getAccountTypeId() !=null){
+                audit.setOldAccountTypeId(existingExpense.getAccountTypeId());
+                audit.setNewAccountTypeId(null);
+                existingExpense.setAccountTypeId(null);
+            }
             if (existingExpense.getAmount() != 0) {
                 audit.setOldAmount(String.valueOf(existingExpense.getAmount()));
                 audit.setNewAmount("0");
@@ -208,16 +328,6 @@ public class ExpensesService implements ExpensesServices {
                 audit.setNewBillCopy(null);
                 existingExpense.setBillCopy(null);
             }
-            if (existingExpense.getSource() != null) {
-                audit.setOldSource(existingExpense.getSource());
-                audit.setNewSource(null);
-                existingExpense.setSource(null);
-            }
-            if (existingExpense.getPaymentMode() != null) {
-                audit.setOldPaymentMode(existingExpense.getPaymentMode());
-                audit.setNewPaymentMode(null);
-                existingExpense.setPaymentMode(null);
-            }
             if (existingExpense.getUtilityType() != null) {
                 audit.setOldUtilityType(existingExpense.getUtilityType());
                 audit.setNewUtilityType(null);
@@ -237,6 +347,16 @@ public class ExpensesService implements ExpensesServices {
                 audit.setOldUtilityValidityDays(existingExpense.getUtilityValidityDays());
                 audit.setNewUtilityValidityDays(null);
                 existingExpense.setUtilityValidityDays(null);
+            }
+            if (existingExpense.getUtilityValidityType() != null){
+                audit.setOldUtilityValidityType(existingExpense.getUtilityValidityType());
+                audit.setNewUtilityValidityType(null);
+                existingExpense.setUtilityValidityType(null);
+            }
+            if (existingExpense.getServiceStartingDate() !=null){
+                audit.setOldServiceStartingDate(existingExpense.getServiceStartingDate());
+                audit.setNewServiceStartingDate(null);
+                existingExpense.setServiceStartingDate(null);
             }
             if (existingExpense.getProjectId() != null){
                 audit.setOldProjectId(existingExpense.getProjectId());
@@ -284,5 +404,9 @@ public class ExpensesService implements ExpensesServices {
     @Override
     public List<ExpensesForm> getAmcUtilityBills(){
         return expensesRepo.findAmcUtilityBills();
+    }
+    @Override
+    public List<ExpensesForm> getProfessionalUtilityBills(){
+        return expensesRepo.findProfessionalUtilityBills();
     }
 }

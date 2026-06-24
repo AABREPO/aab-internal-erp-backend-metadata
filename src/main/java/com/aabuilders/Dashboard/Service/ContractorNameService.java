@@ -47,6 +47,13 @@ public class ContractorNameService {
         existing.setGpayNumber(contractorNames.getGpayNumber());
         existing.setContactNumber(contractorNames.getContactNumber());
         existing.setContactEmail(contractorNames.getContactEmail());
+        existing.setCategory(contractorNames.getCategory());
+        existing.setReferenceName(contractorNames.getReferenceName());
+        existing.setContractorAddress(contractorNames.getContractorAddress());
+        existing.setLocation(contractorNames.getLocation());
+        existing.setContractorBranch(contractorNames.getContractorBranch());
+        existing.setUpiQrImageUrl(contractorNames.getUpiQrImageUrl());
+        existing.setContractorProfileUrl(contractorNames.getContractorProfileUrl());
 
         // Update QR image only if new file is provided
         try {

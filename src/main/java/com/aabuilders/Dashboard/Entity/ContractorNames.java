@@ -31,6 +31,19 @@ public class ContractorNames {
     @Column(name = "upi_qr_image", columnDefinition = "LONGBLOB")
     @JsonProperty("upi_qr_image")
     private byte[] upiQRImage;
+    private String category;
+    @JsonProperty("reference_name")
+    private String referenceName;
+    @JsonProperty("contractor_address")
+    private String contractorAddress;
+    @JsonProperty("location")
+    private String location;
+    @JsonProperty("contractor_branch")
+    private String contractorBranch;
+    @JsonProperty("upi_qr_image_url")
+    private String upiQrImageUrl;
+    @JsonProperty("contractor_profile_url")
+    private String contractorProfileUrl;
 
     public Long getId() {
         return id;
@@ -126,5 +139,61 @@ public class ContractorNames {
 
     public void setUpiQRImage(byte[] upiQRImage) {
         this.upiQRImage = upiQRImage;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getReferenceName() {
+        return referenceName;
+    }
+
+    public void setReferenceName(String referenceName) {
+        this.referenceName = referenceName;
+    }
+
+    public String getContractorAddress() {
+        return contractorAddress;
+    }
+
+    public void setContractorAddress(String contractorAddress) {
+        this.contractorAddress = contractorAddress;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getContractorBranch() {
+        return contractorBranch;
+    }
+
+    public void setContractorBranch(String contractorBranch) {
+        this.contractorBranch = contractorBranch;
+    }
+
+    public String getUpiQrImageUrl() {
+        return upiQrImageUrl;
+    }
+
+    public void setUpiQrImageUrl(String upiQrImageUrl) {
+        this.upiQrImageUrl = upiQrImageUrl;
+    }
+
+    public String getContractorProfileUrl() {
+        return contractorProfileUrl;
+    }
+
+    public void setContractorProfileUrl(String contractorProfileUrl) {
+        this.contractorProfileUrl = contractorProfileUrl;
     }
 }

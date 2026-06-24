@@ -21,11 +21,17 @@ public class ProjectNameWithAllOtherDetails {
     private String projectCategory;
     private String projectReferenceName;
     private String branch;
+    private String location;
+    private String siteEngineerId;
+    private String status;
     private boolean isHide;
     @OneToMany(mappedBy = "projectNameWithAllOtherDetails", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ProjectNameOwnerDetails> ownerDetails;
 
     @OneToMany(mappedBy = "projectNameWithAllOtherDetails", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ProjectNamePropertyDetails> propertyDetails;
+
+    @OneToMany(mappedBy = "projectNameWithAllOtherDetails", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ProjectNameAccountDetails> accountDetails;
 
 }

@@ -32,6 +32,19 @@ public class VendorNames {
     @JsonProperty("upi_qr_image")
     private byte[] upiQRImage;
     private boolean makeAsServiceShop;
+    private String category;
+    @JsonProperty("reference_name")
+    private String referenceName;
+    @JsonProperty("vendor_address")
+    private String vendorAddress;
+    @JsonProperty("location")
+    private String location;
+    @JsonProperty("vendor_branch")
+    private String vendorBranch;
+    @JsonProperty("upi_qr_image_url")
+    private String upiQrImageUrl;
+    @JsonProperty("vendor_profile_url")
+    private String vendorProfileUrl;
 
     public Long getId() {
         return id;
@@ -135,5 +148,61 @@ public class VendorNames {
 
     public void setMakeAsServiceShop(boolean makeAsServiceShop) {
         this.makeAsServiceShop = makeAsServiceShop;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getReferenceName() {
+        return referenceName;
+    }
+
+    public void setReferenceName(String referenceName) {
+        this.referenceName = referenceName;
+    }
+
+    public String getVendorAddress() {
+        return vendorAddress;
+    }
+
+    public void setVendorAddress(String vendorAddress) {
+        this.vendorAddress = vendorAddress;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getVendorBranch() {
+        return vendorBranch;
+    }
+
+    public void setVendorBranch(String vendorBranch) {
+        this.vendorBranch = vendorBranch;
+    }
+
+    public String getUpiQrImageUrl() {
+        return upiQrImageUrl;
+    }
+
+    public void setUpiQrImageUrl(String upiQrImageUrl) {
+        this.upiQrImageUrl = upiQrImageUrl;
+    }
+
+    public String getVendorProfileUrl() {
+        return vendorProfileUrl;
+    }
+
+    public void setVendorProfileUrl(String vendorProfileUrl) {
+        this.vendorProfileUrl = vendorProfileUrl;
     }
 }

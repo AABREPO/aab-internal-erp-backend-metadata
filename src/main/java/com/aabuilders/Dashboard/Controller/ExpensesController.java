@@ -2,14 +2,17 @@ package com.aabuilders.Dashboard.Controller;
 
 import com.aabuilders.Dashboard.DTO.ExpensesEdit;
 import com.aabuilders.Dashboard.DTO.ExpensesAuditDto;
+import com.aabuilders.Dashboard.DTO.ExpensesFilterDto;
 import com.aabuilders.Dashboard.DTO.ExpensesFormDto;
 import com.aabuilders.Dashboard.Entity.ExpensesAudit;
 import com.aabuilders.Dashboard.Entity.ExpensesForm;
 import com.aabuilders.Dashboard.Service.ExpensesServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,7 +32,7 @@ public class ExpensesController {
             }
             ExpensesForm expensesForm = new ExpensesForm();
             expensesForm.setAccountType(expensesFormDto.getAccountType());
-            expensesForm.setENo(expensesFormDto.getEno());
+            expensesForm.setAccountTypeId(expensesFormDto.getAccountTypeId());
             expensesForm.setDate(expensesFormDto.getDate());
             expensesForm.setSiteName(expensesFormDto.getSiteName());
             expensesForm.setProjectId(expensesFormDto.getProjectId());
@@ -51,7 +54,9 @@ public class ExpensesController {
             expensesForm.setUtilityTypeNumber(expensesFormDto.getUtilityTypeNumber());
             expensesForm.setUtilityForTheMonth(expensesFormDto.getUtilityForTheMonth());
             expensesForm.setUtilityValidityDays(expensesFormDto.getUtilityValidityDays());
-
+            expensesForm.setUtilityValidityType(expensesFormDto.getUtilityValidityType());
+            expensesForm.setServiceStartingDate(expensesFormDto.getServiceStartingDate());
+            expensesForm.setBillArrivalDate(expensesFormDto.getBillArrivalDate());
             // Save with FIXED TIMESTAMP (30-11-2025)
             expensesServices.saveFormWithFixedTimestamp(expensesForm, expensesFormDto.getBranchId());
 
@@ -64,14 +69,14 @@ public class ExpensesController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<String> addExpensesFormEntry(@RequestBody ExpensesFormDto expensesFormDto) {
+    public ResponseEntity<?> addExpensesFormEntry(@RequestBody ExpensesFormDto expensesFormDto) {
         try {
             if (expensesFormDto.getBranchId() == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("branchId is required");
             }
             ExpensesForm expensesForm = new ExpensesForm();
             expensesForm.setAccountType(expensesFormDto.getAccountType());
-            expensesForm.setENo(expensesFormDto.getEno());
+            expensesForm.setAccountTypeId(expensesFormDto.getAccountTypeId());
             expensesForm.setTimestamp(LocalDateTime.now()); // Set the current date and time
             expensesForm.setDate(expensesFormDto.getDate());
             expensesForm.setSiteName(expensesFormDto.getSiteName());
@@ -94,9 +99,13 @@ public class ExpensesController {
             expensesForm.setUtilityTypeNumber(expensesFormDto.getUtilityTypeNumber());
             expensesForm.setUtilityForTheMonth(expensesFormDto.getUtilityForTheMonth());
             expensesForm.setUtilityValidityDays(expensesFormDto.getUtilityValidityDays());
+            expensesForm.setUtilityValidityType(expensesFormDto.getUtilityValidityType());
+            expensesForm.setServiceStartingDate(expensesFormDto.getServiceStartingDate());
+            expensesForm.setBillArrivalDate(expensesFormDto.getBillArrivalDate());
+            expensesForm.setEnteredBy(expensesFormDto.getEnteredBy());
 
-            expensesServices.saveForm(expensesForm, expensesFormDto.getBranchId());
-            return ResponseEntity.status(HttpStatus.CREATED).body("Expenses Form submitted successfully");
+            ExpensesForm saved = expensesServices.saveForm(expensesForm, expensesFormDto.getBranchId());
+            return ResponseEntity.status(HttpStatus.CREATED).body(saved);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid data format or other error");
         }
@@ -105,6 +114,23 @@ public class ExpensesController {
     public ResponseEntity<List<ExpensesForm>> getAllExpensesFormEntry() {
         List<ExpensesForm> expensesFormsEntries = expensesServices.getAllEntries();
         return ResponseEntity.ok().body(expensesFormsEntries);
+    }
+
+    @GetMapping("/get/last_400")
+    public ResponseEntity<List<ExpensesForm>> getLast400ExpensesFormEntries() {
+        return ResponseEntity.ok(expensesServices.getLast400Entries());
+    }
+
+    @PostMapping(value = "/filter", produces = MediaType.APPLICATION_NDJSON_VALUE)
+    public ResponseEntity<StreamingResponseBody> filterExpenses(@RequestBody ExpensesFilterDto filter) {
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_NDJSON)
+                .body(expensesServices.streamFilteredExpenses(filter));
+    }
+    @GetMapping("/get/full_history")
+    public ResponseEntity<List<ExpensesAudit>> getAllAuditEntry(){
+        List<ExpensesAudit> expensesAudits = expensesServices.getAllAuditsEntries();
+        return ResponseEntity.ok().body(expensesAudits);
     }
     @PutMapping("/update/{id}")
     public ResponseEntity<String> updateExpense(
@@ -139,6 +165,14 @@ public class ExpensesController {
             dto.setNewContractor(audit.getNewContractor());
             dto.setOldContractorId(audit.getOldContractorId());
             dto.setNewContractorId(audit.getNewContractorId());
+            dto.setOldEmployeeId(audit.getOldEmployeeId());
+            dto.setNewEmployeeId(audit.getNewEmployeeId());
+            dto.setOldLabourId(audit.getOldLabourId());
+            dto.setNewLabourId(audit.getNewLabourId());
+            dto.setOldAccountTypeId(audit.getOldAccountTypeId());
+            dto.setNewAccountTypeId(audit.getNewAccountTypeId());
+            dto.setOldBillArrivalDate(audit.getOldBillArrivalDate());
+            dto.setNewBillArrivalDate(audit.getNewBillArrivalDate());
             dto.setOldDate(audit.getOldDate());
             dto.setNewDate(audit.getNewDate());
             dto.setOldAccountType(audit.getOldAccountType());
@@ -192,5 +226,8 @@ public class ExpensesController {
     public List<ExpensesForm> getAmcUtilityBills(){
         return expensesServices.getAmcUtilityBills();
     }
-
+    @GetMapping("/utility/profession")
+    public List<ExpensesForm> getProfessionalUtilityBills(){
+        return expensesServices.getProfessionalUtilityBills();
+    }
 }

@@ -116,16 +116,16 @@ public class DataInitializationService implements CommandLineRunner {
     private void initializeExpenseData() {
         if (expensesRepo.count() == 0) {
             List<ExpensesForm> expenses = Arrays.asList(
-                createExpense("Operating Expenses", 1001, "ABC Construction Supplies", "Premium Steel Co.", "50 tons", "Quality Cement Ltd.", 250000, "Construction Materials", "Steel beams for structural support", "Excavator"),
-                createExpense("Capital Expenditure", 1002, "XYZ Hardware Store", "Modern Plumbing Solutions", "100 units", "ABC Construction Supplies", 150000, "Plumbing Materials", "High-quality plumbing fixtures", "Concrete Mixer"),
-                createExpense("Maintenance Costs", 1003, "Premium Steel Co.", "Quality Cement Ltd.", "25 bags", "XYZ Hardware Store", 75000, "Construction Materials", "Cement for foundation work", "Drill Machine"),
-                createExpense("Safety Equipment", 1004, "Modern Plumbing Solutions", "ABC Construction Supplies", "20 sets", "Premium Steel Co.", 50000, "Safety Equipment", "Safety harnesses for workers", "Safety Harness"),
-                createExpense("Project Materials", 1005, "Quality Cement Ltd.", "XYZ Hardware Store", "200 meters", "Modern Plumbing Solutions", 120000, "Electrical Supplies", "Electrical wiring for new building", "Crane"),
-                createExpense("Operating Expenses", 1006, "Premium Steel Co.", "ABC Construction Supplies", "30 tons", "Modern Plumbing Solutions", 180000, "Construction Materials", "Reinforcement steel for columns", "Crane"),
-                createExpense("Capital Expenditure", 1007, "Quality Cement Ltd.", "XYZ Hardware Store", "150 units", "Premium Steel Co.", 225000, "Electrical Supplies", "LED lighting fixtures for office", "Drill Machine"),
-                createExpense("Maintenance Costs", 1008, "Modern Plumbing Solutions", "ABC Construction Supplies", "40 bags", "Quality Cement Ltd.", 120000, "Construction Materials", "High-strength concrete mix", "Concrete Mixer"),
-                createExpense("Safety Equipment", 1009, "XYZ Hardware Store", "Premium Steel Co.", "15 sets", "Modern Plumbing Solutions", 45000, "Safety Equipment", "Hard hats and safety goggles", "Safety Harness"),
-                createExpense("Project Materials", 1010, "ABC Construction Supplies", "Quality Cement Ltd.", "300 meters", "XYZ Hardware Store", 180000, "Electrical Supplies", "Copper wiring for electrical system", "Excavator")
+                createExpense("Operating Expenses", 1001L, "ABC Construction Supplies", "Premium Steel Co.", "50 tons", "Quality Cement Ltd.", 250000, "Construction Materials", "Steel beams for structural support", "Excavator"),
+                createExpense("Capital Expenditure", 1002L, "XYZ Hardware Store", "Modern Plumbing Solutions", "100 units", "ABC Construction Supplies", 150000, "Plumbing Materials", "High-quality plumbing fixtures", "Concrete Mixer"),
+                createExpense("Maintenance Costs", 1003L, "Premium Steel Co.", "Quality Cement Ltd.", "25 bags", "XYZ Hardware Store", 75000, "Construction Materials", "Cement for foundation work", "Drill Machine"),
+                createExpense("Safety Equipment", 1004L, "Modern Plumbing Solutions", "ABC Construction Supplies", "20 sets", "Premium Steel Co.", 50000, "Safety Equipment", "Safety harnesses for workers", "Safety Harness"),
+                createExpense("Project Materials", 1005L, "Quality Cement Ltd.", "XYZ Hardware Store", "200 meters", "Modern Plumbing Solutions", 120000, "Electrical Supplies", "Electrical wiring for new building", "Crane"),
+                createExpense("Operating Expenses", 1006L, "Premium Steel Co.", "ABC Construction Supplies", "30 tons", "Modern Plumbing Solutions", 180000, "Construction Materials", "Reinforcement steel for columns", "Crane"),
+                createExpense("Capital Expenditure", 1007L, "Quality Cement Ltd.", "XYZ Hardware Store", "150 units", "Premium Steel Co.", 225000, "Electrical Supplies", "LED lighting fixtures for office", "Drill Machine"),
+                createExpense("Maintenance Costs", 1008L, "Modern Plumbing Solutions", "ABC Construction Supplies", "40 bags", "Quality Cement Ltd.", 120000, "Construction Materials", "High-strength concrete mix", "Concrete Mixer"),
+                createExpense("Safety Equipment", 1009L, "XYZ Hardware Store", "Premium Steel Co.", "15 sets", "Modern Plumbing Solutions", 45000, "Safety Equipment", "Hard hats and safety goggles", "Safety Harness"),
+                createExpense("Project Materials", 1010L, "ABC Construction Supplies", "Quality Cement Ltd.", "300 meters", "XYZ Hardware Store", 180000, "Electrical Supplies", "Copper wiring for electrical system", "Excavator")
             );
             expensesRepo.saveAll(expenses);
             System.out.println("✅ Initialized 10 expense/purchase order records");
@@ -156,7 +156,7 @@ public class DataInitializationService implements CommandLineRunner {
         return accountType;
     }
 
-    private ExpensesForm createExpense(String accountType, int eno, String siteName, String vendor, 
+    private ExpensesForm createExpense(String accountType, Long eno, String siteName, String vendor,
                                      String quantity, String contractor, int amount, String category, 
                                      String comments, String machineTools) {
         ExpensesForm expense = new ExpensesForm();

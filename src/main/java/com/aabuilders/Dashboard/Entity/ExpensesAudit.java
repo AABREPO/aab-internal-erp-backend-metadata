@@ -30,10 +30,16 @@ public class ExpensesAudit {
     private String newContractor;
     private Long oldContractorId;
     private Long newContractorId;
+    private Long oldEmployeeId;
+    private Long newEmployeeId;
+    private Long oldLabourId;
+    private Long newLabourId;
     private String oldDate;
     private String newDate;
     private String oldAccountType;
     private String newAccountType;
+    private Long oldAccountTypeId;
+    private Long newAccountTypeId;
     private String oldQuantity;
     private String newQuantity;
     private String oldAmount;
@@ -58,5 +64,10 @@ public class ExpensesAudit {
     private String newUtilityForTheMonth;
     private String oldUtilityValidityDays;
     private String newUtilityValidityDays;
-
+    private String oldUtilityValidityType;
+    private String newUtilityValidityType;
+    private String oldServiceStartingDate;
+    private String newServiceStartingDate;
+    private String oldBillArrivalDate;
+    private String newBillArrivalDate;
 }

@@ -5,20 +5,21 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
 @Getter
 @Setter
-public class ProjectNameOwnerDetails {
-
+@Entity
+public class ProjectNameAccountDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String clientName;
-    private String fatherName;
-    private String mobile;
-    private String age;
-    private String emailId;
-    private String clientAddress;
+    private String accountHolderName;
+    private String accountNumber;
+    private String nameOfTheBank;
+    private String branchOfTheBank;
+    private String ifscCode;
+    private String upiPhoneNumber;
+    private String upiId;
+    private String qrCodeUrl;
     @ManyToOne
     @JoinColumn(name = "project_name_id")  // FK column for the relationship
     @JsonBackReference

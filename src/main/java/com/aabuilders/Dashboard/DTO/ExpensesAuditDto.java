@@ -24,10 +24,16 @@ public class ExpensesAuditDto {
     private String newContractor;
     private Long oldContractorId;
     private Long newContractorId;
+    private Long oldEmployeeId;
+    private Long newEmployeeId;
+    private Long oldLabourId;
+    private Long newLabourId;
     private String oldDate;
     private String newDate;
     private String oldAccountType;
     private String newAccountType;
+    private Long oldAccountTypeId;
+    private Long newAccountTypeId;
     private String oldQuantity;
     private String newQuantity;
     private String oldAmount;
@@ -40,6 +46,24 @@ public class ExpensesAuditDto {
     private String newMachineTools;
     private String oldBillCopy;
     private String newBillCopy;
+    private String oldSource;
+    private String newSource;
+    private String oldPaymentMode;
+    private String newPaymentMode;
+    private String oldUtilityType;
+    private String newUtilityType;
+    private String oldUtilityTypeNumber;
+    private String newUtilityTypeNumber;
+    private String oldUtilityForTheMonth;
+    private String newUtilityForTheMonth;
+    private String oldUtilityValidityDays;
+    private String newUtilityValidityDays;
+    private String oldUtilityValidityType;
+    private String newUtilityValidityType;
+    private String oldServiceStartingDate;
+    private String newServiceStartingDate;
+    private String oldBillArrivalDate;
+    private String newBillArrivalDate;
 
 
 }

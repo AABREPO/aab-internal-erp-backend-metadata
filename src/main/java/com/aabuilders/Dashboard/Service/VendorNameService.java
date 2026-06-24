@@ -56,6 +56,13 @@ public class VendorNameService {
         existingVendor.setGpayNumber(vendorNames.getGpayNumber());
         existingVendor.setContactNumber(vendorNames.getContactNumber());
         existingVendor.setContactEmail(vendorNames.getContactEmail());
+        existingVendor.setCategory(vendorNames.getCategory());
+        existingVendor.setReferenceName(vendorNames.getReferenceName());
+        existingVendor.setVendorAddress(vendorNames.getVendorAddress());
+        existingVendor.setLocation(vendorNames.getLocation());
+        existingVendor.setVendorBranch(vendorNames.getVendorBranch());
+        existingVendor.setUpiQrImageUrl(vendorNames.getUpiQrImageUrl());
+        existingVendor.setVendorProfileUrl(vendorNames.getVendorProfileUrl());
         // Update QR image if provided
         try {
             if (file != null && !file.isEmpty()) {

@@ -11,6 +11,7 @@ public class ExpensesCategory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String category;
+    private String categoryImageUrl;
 
     public Long getId() {
         return id;
@@ -26,5 +27,13 @@ public class ExpensesCategory {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getCategoryImageUrl() {
+        return categoryImageUrl;
+    }
+
+    public void setCategoryImageUrl(String categoryImageUrl) {
+        this.categoryImageUrl = categoryImageUrl;
     }
 }

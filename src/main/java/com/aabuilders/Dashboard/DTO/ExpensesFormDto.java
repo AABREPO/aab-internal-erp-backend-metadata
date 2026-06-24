@@ -16,6 +16,7 @@ public class ExpensesFormDto {
     private String quantity;
     private String contractor;
     private Long contractorId;
+    private Long accountTypeId;
     private Long employeeId;
     private Long labourId;
     private int amount;
@@ -28,8 +29,12 @@ public class ExpensesFormDto {
     private String utilityTypeNumber;
     private String utilityForTheMonth;
     private String utilityValidityDays;
+    private String utilityValidityType;
+    private String serviceStartingDate;
     private String paymentMode;
     private Long branchId;
+    private String enteredBy;
+    private String billArrivalDate;
 
     public String getAccountType() {
         return accountType;
@@ -109,6 +114,14 @@ public class ExpensesFormDto {
 
     public void setContractorId(Long contractorId) {
         this.contractorId = contractorId;
+    }
+
+    public Long getAccountTypeId() {
+        return accountTypeId;
+    }
+
+    public void setAccountTypeId(Long accountTypeId) {
+        this.accountTypeId = accountTypeId;
     }
 
     public Long getEmployeeId() {
@@ -207,6 +220,22 @@ public class ExpensesFormDto {
         this.utilityValidityDays = utilityValidityDays;
     }
 
+    public String getUtilityValidityType() {
+        return utilityValidityType;
+    }
+
+    public void setUtilityValidityType(String utilityValidityType) {
+        this.utilityValidityType = utilityValidityType;
+    }
+
+    public String getServiceStartingDate() {
+        return serviceStartingDate;
+    }
+
+    public void setServiceStartingDate(String serviceStartingDate) {
+        this.serviceStartingDate = serviceStartingDate;
+    }
+
     public String getPaymentMode() {
         return paymentMode;
     }
@@ -221,5 +250,21 @@ public class ExpensesFormDto {
 
     public void setBranchId(Long branchId) {
         this.branchId = branchId;
+    }
+
+    public String getEnteredBy() {
+        return enteredBy;
+    }
+
+    public void setEnteredBy(String enteredBy) {
+        this.enteredBy = enteredBy;
+    }
+
+    public String getBillArrivalDate() {
+        return billArrivalDate;
+    }
+
+    public void setBillArrivalDate(String billArrivalDate) {
+        this.billArrivalDate = billArrivalDate;
     }
 }

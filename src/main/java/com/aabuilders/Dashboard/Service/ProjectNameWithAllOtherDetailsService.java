@@ -39,6 +39,11 @@ public class ProjectNameWithAllOtherDetailsService {
         if (project.getPropertyDetails() != null) {
             project.getPropertyDetails().forEach(property -> property.setProjectNameWithAllOtherDetails(project));
         }
+        if (project.getAccountDetails() != null) {
+            project.getAccountDetails().forEach(account ->
+                    account.setProjectNameWithAllOtherDetails(project)
+            );
+        }
 
         return projectRepository.save(project);
     }
@@ -50,7 +55,10 @@ public class ProjectNameWithAllOtherDetailsService {
                     existing.setProjectId(updatedProject.getProjectId());
                     existing.setProjectCategory(updatedProject.getProjectCategory());
                     existing.setProjectReferenceName(updatedProject.getProjectReferenceName());
+                    existing.setLocation(updatedProject.getLocation());
                     existing.setBranch(updatedProject.getBranch());
+                    existing.setSiteEngineerId(updatedProject.getSiteEngineerId());
+                    existing.setStatus(updatedProject.getStatus());
                     // --- Replace owner details ---
                     existing.getOwnerDetails().clear();
                     if (updatedProject.getOwnerDetails() != null) {
@@ -66,6 +74,15 @@ public class ProjectNameWithAllOtherDetailsService {
                         updatedProject.getPropertyDetails().forEach(property -> {
                             property.setProjectNameWithAllOtherDetails(existing);
                             existing.getPropertyDetails().add(property);
+                        });
+                    }
+
+                    // --- Replace account details ---
+                    existing.getAccountDetails().clear();
+                    if (updatedProject.getAccountDetails() !=null){
+                        updatedProject.getAccountDetails().forEach(account ->{
+                            account.setProjectNameWithAllOtherDetails(existing);
+                            existing.getAccountDetails().add(account);
                         });
                     }
 

@@ -25,6 +25,7 @@ public class ProjectNamePropertyDetails {
     private String propertyTaxFrequency;
     private String waterTaxNo;
     private String waterTaxFrequency;
+    private String professionalTaxNo;
     @ManyToOne
     @JoinColumn(name = "project_name_id")
     @JsonBackReference

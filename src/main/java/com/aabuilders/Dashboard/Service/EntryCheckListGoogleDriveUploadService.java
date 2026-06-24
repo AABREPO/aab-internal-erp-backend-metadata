@@ -17,6 +17,7 @@ import com.google.api.services.drive.DriveScopes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -46,64 +47,65 @@ public class EntryCheckListGoogleDriveUploadService {
         return (max != null ? max : 836) + 1;
     }
 
-    public Res uploadPdfToDrive(InputStream inputStream, String filename) {
+    public Res uploadPdfToR2ViaApi(byte[] pdfData, String fileName) {
         Res res = new Res();
-        try {
-            // Save InputStream to a temporary file
-            File tempFile = File.createTempFile("upload-", ".pdf");
-            Files.copy(inputStream, tempFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
+        try {
             String boundary = UUID.randomUUID().toString();
             String CRLF = "\r\n";
-            String mimeType = "application/pdf";
-            String folderId = "1f5ZrmSnDxfT34y8hZcXu1StVBRi1HciX"; // 💡 optional but passed to Flask
 
-            // Multipart form-data parts
-            StringBuilder builder = new StringBuilder();
-            builder.append("--").append(boundary).append(CRLF)
-                    .append("Content-Disposition: form-data; name=\"folder_id\"").append(CRLF).append(CRLF)
-                    .append(folderId).append(CRLF);
+            ByteArrayOutputStream body = new ByteArrayOutputStream();
 
-            builder.append("--").append(boundary).append(CRLF)
-                    .append("Content-Disposition: form-data; name=\"file_name\"").append(CRLF).append(CRLF)
-                    .append(filename).append(CRLF);
+            // file part
+            body.write(("--" + boundary + CRLF).getBytes());
+            body.write(("Content-Disposition: form-data; name=\"files\"; filename=\"" + fileName + "\"" + CRLF).getBytes());
+            body.write(("Content-Type: application/pdf" + CRLF + CRLF).getBytes());
+            body.write(pdfData);
+            body.write(CRLF.getBytes());
 
-            builder.append("--").append(boundary).append(CRLF)
-                    .append("Content-Disposition: form-data; name=\"file\"; filename=\"").append(filename).append("\"").append(CRLF)
-                    .append("Content-Type: ").append(mimeType).append(CRLF).append(CRLF);
+            // folder
+            body.write(("--" + boundary + CRLF).getBytes());
+            body.write(("Content-Disposition: form-data; name=\"folder\"" + CRLF + CRLF).getBytes());
+            body.write("FileUpload/Daily_Expense_Reports".getBytes()); // ✅ folder name
+            body.write(CRLF.getBytes());
 
-            byte[] fileBytes = Files.readAllBytes(tempFile.toPath());
-            byte[] preFileData = builder.toString().getBytes(StandardCharsets.UTF_8);
-            byte[] postFileData = (CRLF + "--" + boundary + "--" + CRLF).getBytes(StandardCharsets.UTF_8);
+            // filename
+            body.write(("--" + boundary + CRLF).getBytes());
+            body.write(("Content-Disposition: form-data; name=\"fileName\"" + CRLF + CRLF).getBytes());
+            body.write(fileName.getBytes());
+            body.write(CRLF.getBytes());
 
-            byte[] requestBody = concat(preFileData, fileBytes, postFileData);
+            body.write(("--" + boundary + "--" + CRLF).getBytes());
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("http://localhost:5000/upload"))
+                    .uri(URI.create("https://backendaab.in/aabuildersDash/api/files/upload"))
                     .header("Content-Type", "multipart/form-data; boundary=" + boundary)
-                    .POST(HttpRequest.BodyPublishers.ofByteArray(requestBody))
+                    .POST(HttpRequest.BodyPublishers.ofByteArray(body.toByteArray()))
                     .build();
 
             HttpClient client = HttpClient.newHttpClient();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            tempFile.delete();
-
             if (response.statusCode() == 200) {
-                String body = response.body();
-                String url = extractUrlFromJson(body);
+                String responseBody = response.body();
+
+                // extract URL from JSON
+                String url = extractUrlFromJson(responseBody);
+
                 res.setStatus(200);
                 res.setUrl(url);
-                res.setMessage("✅ Uploaded via Flask to Drive");
+                res.setMessage("Uploaded to R2 via 8082");
+
             } else {
-                res.setStatus(response.statusCode());
-                res.setMessage("❌ Flask server error: " + response.body());
+                res.setStatus(500);
+                res.setMessage("Upload failed: " + response.body());
             }
 
         } catch (Exception e) {
             res.setStatus(500);
-            res.setMessage("🚨 Exception: " + e.getMessage());
+            res.setMessage("Exception: " + e.getMessage());
         }
+
         return res;
     }
 
@@ -111,7 +113,13 @@ public class EntryCheckListGoogleDriveUploadService {
         try {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode node = mapper.readTree(json);
-            return node.has("file_url") ? node.get("file_url").asText() : null;
+
+            if (node.has("urls") && node.get("urls").isArray()) {
+                return node.get("urls").get(0).asText();
+            }
+
+            return null;
+
         } catch (Exception e) {
             return null;
         }

@@ -20,9 +20,20 @@ public class RccBeamNameController {
             @RequestParam("beamName") String beamName,
             @RequestParam("formula") String formula,
             @RequestParam("rate") String rate,
-            @RequestParam(value = "measurementImage", required = false)MultipartFile file) throws IOException{
-        byte[] imageData = (file != null && !file.isEmpty())? file.getBytes() : null;
-        rccBeamNameService.saveRccBeamName(beamName, formula, rate, imageData);
+            @RequestParam(value = "measurementImage", required = false) MultipartFile file,
+            @RequestParam(value = "a", required = false) String a,
+            @RequestParam(value = "isAEditable", defaultValue = "false") boolean isAEditable,
+            @RequestParam(value = "isAMultiple", defaultValue = "false") boolean isAMultiple,
+            @RequestParam(value = "b", required = false) String b,
+            @RequestParam(value = "isBEditable", defaultValue = "false") boolean isBEditable,
+            @RequestParam(value = "isBMultiple", defaultValue = "false") boolean isBMultiple,
+            @RequestParam(value = "c", required = false) String c,
+            @RequestParam(value = "isCEditable", defaultValue = "false") boolean isCEditable,
+            @RequestParam(value = "isCMultiple", defaultValue = "false") boolean isCMultiple,
+            @RequestParam(value = "steelConfiguration", required = false) String steelConfiguration) throws IOException {
+        byte[] imageData = (file != null && !file.isEmpty()) ? file.getBytes() : null;
+        rccBeamNameService.saveRccBeamName(beamName, formula, rate, imageData,
+                a, isAEditable, isAMultiple, b, isBEditable, isBMultiple, c, isCEditable, isCMultiple, steelConfiguration);
         return ResponseEntity.ok("Beam Name And Formula Upload Successfully");
     }
     @GetMapping("/all/beamNameData")
@@ -36,9 +47,20 @@ public class RccBeamNameController {
             @RequestParam("beamName") String beamName,
             @RequestParam("formula") String formula,
             @RequestParam("rate") String rate,
-            @RequestParam(value = "measurementImage", required = false)MultipartFile file) throws IOException {
+            @RequestParam(value = "measurementImage", required = false) MultipartFile file,
+            @RequestParam(value = "a", required = false) String a,
+            @RequestParam(value = "isAEditable", defaultValue = "false") boolean isAEditable,
+            @RequestParam(value = "isAMultiple", defaultValue = "false") boolean isAMultiple,
+            @RequestParam(value = "b", required = false) String b,
+            @RequestParam(value = "isBEditable", defaultValue = "false") boolean isBEditable,
+            @RequestParam(value = "isBMultiple", defaultValue = "false") boolean isBMultiple,
+            @RequestParam(value = "c", required = false) String c,
+            @RequestParam(value = "isCEditable", defaultValue = "false") boolean isCEditable,
+            @RequestParam(value = "isCMultiple", defaultValue = "false") boolean isCMultiple,
+            @RequestParam(value = "steelConfiguration", required = false) String steelConfiguration) throws IOException {
         byte[] imageData = (file != null && !file.isEmpty()) ? file.getBytes() : null;
-        rccBeamNameService.updatedBeamName(id, beamName, formula, rate, imageData);
+        rccBeamNameService.updatedBeamName(id, beamName, formula, rate, imageData,
+                a, isAEditable, isAMultiple, b, isBEditable, isBMultiple, c, isCEditable, isCMultiple, steelConfiguration);
         return ResponseEntity.ok("Rcc Beam Name And Formula Updated Successfully");
     }
     @DeleteMapping("/delete/{id}")
