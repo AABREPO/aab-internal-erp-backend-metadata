@@ -12,7 +12,8 @@ public class SiteNamesWithSiteNo {
     private Long id;
     private String siteName;
     private String siteNo;
-
+    private String branch;
+    private boolean markedAsStockingLocation;
     public Long getId() {
         return id;
     }
@@ -35,5 +36,21 @@ public class SiteNamesWithSiteNo {
 
     public void setSiteNo(String siteNo) {
         this.siteNo = siteNo;
+    }
+
+    public String getBranch() {
+        return branch;
+    }
+
+    public void setBranch(String branch) {
+        this.branch = branch;
+    }
+
+    public boolean isMarkedAsStockingLocation() {
+        return markedAsStockingLocation;
+    }
+
+    public void setMarkedAsStockingLocation(boolean markedAsStockingLocation) {
+        this.markedAsStockingLocation = markedAsStockingLocation;
     }
 }

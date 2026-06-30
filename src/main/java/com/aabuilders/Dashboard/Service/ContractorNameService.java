@@ -19,21 +19,52 @@ public class ContractorNameService {
     @Autowired
     private ContractorNamesRepository contractorNamesRepository;
 
-    public ContractorNames saveContractorName(ContractorNames contractorNames){
+    public ContractorNames saveContractorName(ContractorNames contractorNames, MultipartFile file) {
+        try {
+            if (file != null && !file.isEmpty()) {
+                contractorNames.setUpiQRImage(file.getBytes());
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to save QR image", e);
+        }
         return contractorNamesRepository.save(contractorNames);
     }
     public List<ContractorNames> getAllContractorNames(){
         return contractorNamesRepository.findAll();
     }
-    public ContractorNames updateContractorNames(Long id, ContractorNames contractorNames){
-        Optional<ContractorNames> existingContractorNames = contractorNamesRepository.findById(id);
-        if (existingContractorNames.isPresent()){
-            ContractorNames updatedContractorNames = existingContractorNames.get();
-            updatedContractorNames.setContractorName(contractorNames.getContractorName());
-            return contractorNamesRepository.save(updatedContractorNames);
-        }else {
-            throw new RuntimeException("Contractor Name not found "+ id );
+    public ContractorNames updateContractorNames(Long id, ContractorNames contractorNames, MultipartFile file) {
+        ContractorNames existing = contractorNamesRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Contractor Name not found " + id));
+
+        // Update fields
+        existing.setContractorName(contractorNames.getContractorName());
+        existing.setAccountHolderName(contractorNames.getAccountHolderName());
+        existing.setAccountNumber(contractorNames.getAccountNumber());
+        existing.setBankName(contractorNames.getBankName());
+        existing.setIfscCode(contractorNames.getIfscCode());
+        existing.setBranch(contractorNames.getBranch());
+        existing.setUpiId(contractorNames.getUpiId());
+        existing.setGpayNumber(contractorNames.getGpayNumber());
+        existing.setContactNumber(contractorNames.getContactNumber());
+        existing.setContactEmail(contractorNames.getContactEmail());
+        existing.setCategory(contractorNames.getCategory());
+        existing.setReferenceName(contractorNames.getReferenceName());
+        existing.setContractorAddress(contractorNames.getContractorAddress());
+        existing.setLocation(contractorNames.getLocation());
+        existing.setContractorBranch(contractorNames.getContractorBranch());
+        existing.setUpiQrImageUrl(contractorNames.getUpiQrImageUrl());
+        existing.setContractorProfileUrl(contractorNames.getContractorProfileUrl());
+
+        // Update QR image only if new file is provided
+        try {
+            if (file != null && !file.isEmpty()) {
+                existing.setUpiQRImage(file.getBytes());
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to update QR image", e);
         }
+
+        return contractorNamesRepository.save(existing);
     }
     public String uploadContractorNameData(MultipartFile file){
         if (file.isEmpty()){

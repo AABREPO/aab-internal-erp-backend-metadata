@@ -1,6 +1,7 @@
 package com.aabuilders.Dashboard.Controller;
 
 import com.aabuilders.Dashboard.DTO.UserDto;
+import com.aabuilders.Dashboard.DTO.UsernameOnlyDto;
 import com.aabuilders.Dashboard.Entity.User;
 import com.aabuilders.Dashboard.Repository.UserRepository;
 import com.aabuilders.Dashboard.Service.UserService;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -39,11 +41,19 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to register user: " + e.getMessage());
         }
     }
-
     @GetMapping("/user/all")
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
+    }
+
+    @GetMapping("/user/usernames")
+    public ResponseEntity<List<UsernameOnlyDto>> getAllUsernames() {
+        List<UsernameOnlyDto> usernames = userService.getAllUsernames()
+                .stream()
+                .map(UsernameOnlyDto::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(usernames);
     }
     @GetMapping("/user/id/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {

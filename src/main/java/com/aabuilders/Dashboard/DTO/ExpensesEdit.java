@@ -11,15 +11,32 @@ public class ExpensesEdit {
     private LocalDateTime timestamp;
     private LocalDate date;
     private String siteName;
+    private Long projectId;
     private String vendor;
+    private Long vendorId;
+    private Long employeeId;
+    private Long labourId;
     private String quantity;
     private String contractor;
+    private Long contractorId;
+    private Long accountTypeId;
     private int amount;
     private String category;
    private String Comments;
     private String machineTools;
     private String billCopy;
     private String editedBy;
+    private String source;
+    private String paymentMode;
+    private String utilityType;
+    private String utilityTypeNumber;
+    private String utilityForTheMonth;
+    private String utilityValidityDays;
+    private String utilityValidityType;
+    private String serviceStartingDate;
+    private String billArrivalDate;
+    private Long weeklyExpensesId;
+
     public Long getId() {
         return Id;
     }
@@ -68,12 +85,28 @@ public class ExpensesEdit {
         this.siteName = siteName;
     }
 
+    public Long getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Long projectId) {
+        this.projectId = projectId;
+    }
+
     public String getVendor() {
         return vendor;
     }
 
     public void setVendor(String vendor) {
         this.vendor = vendor;
+    }
+
+    public Long getVendorId() {
+        return vendorId;
+    }
+
+    public void setVendorId(Long vendorId) {
+        this.vendorId = vendorId;
     }
 
     public String getQuantity() {
@@ -90,6 +123,38 @@ public class ExpensesEdit {
 
     public void setContractor(String contractor) {
         this.contractor = contractor;
+    }
+
+    public Long getContractorId() {
+        return contractorId;
+    }
+
+    public void setContractorId(Long contractorId) {
+        this.contractorId = contractorId;
+    }
+
+    public Long getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(Long employeeId) {
+        this.employeeId = employeeId;
+    }
+
+    public Long getLabourId() {
+        return labourId;
+    }
+
+    public void setLabourId(Long labourId) {
+        this.labourId = labourId;
+    }
+
+    public Long getAccountTypeId() {
+        return accountTypeId;
+    }
+
+    public void setAccountTypeId(Long accountTypeId) {
+        this.accountTypeId = accountTypeId;
     }
 
     public int getAmount() {
@@ -138,5 +203,85 @@ public class ExpensesEdit {
 
     public void setEditedBy(String editedBy) {
         this.editedBy = editedBy;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public String getPaymentMode() {
+        return paymentMode;
+    }
+
+    public void setPaymentMode(String paymentMode) {
+        this.paymentMode = paymentMode;
+    }
+
+    public String getUtilityType() {
+        return utilityType;
+    }
+
+    public void setUtilityType(String utilityType) {
+        this.utilityType = utilityType;
+    }
+
+    public String getUtilityTypeNumber() {
+        return utilityTypeNumber;
+    }
+
+    public void setUtilityTypeNumber(String utilityTypeNumber) {
+        this.utilityTypeNumber = utilityTypeNumber;
+    }
+
+    public String getUtilityForTheMonth() {
+        return utilityForTheMonth;
+    }
+
+    public void setUtilityForTheMonth(String utilityForTheMonth) {
+        this.utilityForTheMonth = utilityForTheMonth;
+    }
+
+    public String getUtilityValidityDays() {
+        return utilityValidityDays;
+    }
+
+    public void setUtilityValidityDays(String utilityValidityDays) {
+        this.utilityValidityDays = utilityValidityDays;
+    }
+
+    public String getUtilityValidityType() {
+        return utilityValidityType;
+    }
+
+    public void setUtilityValidityType(String utilityValidityType) {
+        this.utilityValidityType = utilityValidityType;
+    }
+
+    public String getServiceStartingDate() {
+        return serviceStartingDate;
+    }
+
+    public void setServiceStartingDate(String serviceStartingDate) {
+        this.serviceStartingDate = serviceStartingDate;
+    }
+
+    public String getBillArrivalDate() {
+        return billArrivalDate;
+    }
+
+    public void setBillArrivalDate(String billArrivalDate) {
+        this.billArrivalDate = billArrivalDate;
+    }
+
+    public Long getWeeklyExpensesId() {
+        return weeklyExpensesId;
+    }
+
+    public void setWeeklyExpensesId(Long weeklyExpensesId) {
+        this.weeklyExpensesId = weeklyExpensesId;
     }
 }

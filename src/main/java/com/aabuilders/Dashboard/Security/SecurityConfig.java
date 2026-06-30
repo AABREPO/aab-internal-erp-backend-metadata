@@ -41,7 +41,7 @@ public class SecurityConfig {
                                 ,"/api/rcc/formulas/edit/**","/api/rcc/formulas/delete/**","/api/rcc/formulas/delete/all","/api/rcc/formulas/bulk_upload"
                                 ,"/api/beam_types/save","/api/beam_types/getAll","/api/beam_types/edit/**","/api/beam_types/delete/**","/api/beam_types/bulkUpload"
                                 ,"/api/beam_types/delete/all","api/rcc/size/save","api/rcc/size/get","api/rcc/size/edit/**","api/rcc/size/delete/**","api/rcc/size/deleteAll"
-                                ,"api/rcc/size/bulkUpload","/api/rcc_formWork/getAll","/api/rcc_concrete/save","/api/rcc_concrete/getAll","/api/tile/vendor/save"
+                                ,"api/rcc/size/bulkUpload","/api/rcc_formWork/getAll","/api/rcc_concrete/save","/api/rcc_concrete/getAll","/api/tile/vendor/save","/api/project_Names/get/**"
                                 ,"/api/tile/vendor/getAll","/api/tile/vendor/**","/api/tile/vendor/delete/**","/api/tile/vendor/delete/all","/api/tile/vendor/bulkUpload"
                                 ,"/api/project_Names/getAll","/api/project_Names/save","/api/project_Names/deleteAll","/api/project_Names/bulk_upload","/api/bath_model/save"
                                 ,"/api/bath_model/getAll","/api/bath_model/edit/**","/api/bath_model/delete/**","/api/bath_model/deleteAll","/api/bath_model/saveAll"
@@ -57,8 +57,9 @@ public class SecurityConfig {
                                 ,"/api/account_type/bulk_Upload","/api/account_type/deleteAll","/api/account_type/delete/**","/api/machine_tools/delete/**","/api/account_type/daily_checklist"
                                 ,"/api/project_Names/edit/**","/api/project_Names/delete/**","/api/vendor_Names/delete/**","/api/vendor_Names/edit/**","/api/contractor_Names/delete/**"
                                 ,"/api/contractor_Names/edit/**","/api/account_type/edit/**","/api/machine_tools/edit/**","/agreement/googleUploader/uploadToGoogleDrive","/api/user_roles/save"
-                                ,"/api/user_roles/all","/api/user_roles/edit/**","/api/roles/save","/api/roles/all","/rentForm/googleUploader/uploadToGoogleDrive"
-                                ,"/forward"
+                                ,"/api/user_roles/all","/api/user_roles/edit/**","/api/roles/save","/api/roles/all","/rentForm/googleUploader/uploadToGoogleDrive","/api/vendor_Names/get/**"
+                                ,"/forward","/expenses_form/utility/**","/api/projects/**","/api/frequency-history/**","/expenses_form/save_fixed","/api/project_Names/{id}/stocking-location"
+                                ,"/api/vendor_Names/{id}/make-store", "/api/user/usernames","/api/expenses_categories/**","/expenses_form/get/**","/expenses_form/filter/**"
 
                         ).permitAll()
                         .anyRequest().authenticated()
@@ -69,7 +70,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedOriginPattern("*"); // Allow all origins
-        configuration.setAllowedOrigins(List.of("http://localhost:3000","http://localhost:5173", "https://dashboard.aabuilders.in"));
+        configuration.setAllowedOrigins(List.of("http://localhost:3000", "https://dashboard.aabuilders.in", "https://demo.aabuilders.in","https://orbit.aabuilders.in"));
         configuration.setAllowCredentials(true); // Needed for cookies/auth headers
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList(

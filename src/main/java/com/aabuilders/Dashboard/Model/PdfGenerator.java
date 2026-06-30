@@ -65,7 +65,7 @@ public class PdfGenerator {
 
         addHeaderCell(header, "DATE OF ENTRY :", normalFont);
 
-        String entryDate = entries.isEmpty() ? "" : DATE_FORMATTER.format(entries.get(0).getTimestamp().toLocalDate());
+        String entryDate = entries.isEmpty() ? "" : DATE_FORMATTER.format(entries.get(0).getTimestamp().minusMinutes(330).toLocalDate());
 
         addHeaderCell(header, entryDate, labelFont);
 
@@ -111,7 +111,7 @@ public class PdfGenerator {
             return e1.getSiteName().compareToIgnoreCase(e2.getSiteName());
         });
         for (DailyChecklistEntry e : entries) {
-            table.addCell(createCell(e.getTimestamp() != null ? e.getTimestamp().format(TIMESTAMP_FORMATTER) : "", normalFont, Element.ALIGN_LEFT, lightGray));
+            table.addCell(createCell(e.getTimestamp() != null ? e.getTimestamp().minusMinutes(330).format(TIMESTAMP_FORMATTER) : "", normalFont, Element.ALIGN_LEFT, lightGray));
             table.addCell(createCell(e.getDate() != null ? e.getDate().format(DATE_FORMATTER) : "", normalFont, Element.ALIGN_LEFT, lightGray));
             table.addCell(createCell(e.getSiteName(), normalFont, Element.ALIGN_LEFT, lightGray));
             table.addCell(createCell(e.getVendor(), normalFont, Element.ALIGN_LEFT, lightGray));

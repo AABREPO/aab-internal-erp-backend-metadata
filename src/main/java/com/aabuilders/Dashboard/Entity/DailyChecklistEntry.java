@@ -20,7 +20,7 @@ public class DailyChecklistEntry {
     private String quantity;
     private int amount;
     private String category;
-    private int eno;
+    private Long eno;
     private int checklistNumber;
     private String entryChecklistUrl;
 
@@ -98,11 +98,11 @@ public class DailyChecklistEntry {
         this.category = category;
     }
 
-    public int getEno() {
+    public Long getEno() {
         return eno;
     }
 
-    public void setEno(int eno) {
+    public void setEno(Long eno) {
         this.eno = eno;
     }
 

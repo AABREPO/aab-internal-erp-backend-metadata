@@ -1,9 +1,6 @@
 package com.aabuilders.Dashboard.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class RccFormWork {
@@ -13,44 +10,89 @@ public class RccFormWork {
   private String type;
   private String size;
   private String rccTypes;
+  @Column(columnDefinition = "TEXT")
   private String length;
+  @Column(columnDefinition = "TEXT")
   private String length1;
+  @Column(columnDefinition = "TEXT")
   private String length2;
+  @Column(columnDefinition = "TEXT")
   private String length3;
+  @Column(columnDefinition = "TEXT")
   private String length4;
+  @Column(columnDefinition = "TEXT")
   private String length5;
+  @Column(columnDefinition = "TEXT")
   private String length6;
+  @Column(columnDefinition = "TEXT")
   private String length7;
+  @Column(columnDefinition = "TEXT")
   private String length8;
+  @Column(columnDefinition = "TEXT")
   private String length9;
+  @Column(columnDefinition = "TEXT")
   private String length10;
+  @Column(columnDefinition = "TEXT")
   private String length11;
+  @Column(columnDefinition = "TEXT")
   private String length12;
+  @Column(columnDefinition = "TEXT")
   private String length13;
+  @Column(columnDefinition = "TEXT")
   private String length14;
+  @Column(columnDefinition = "TEXT")
   private String length15;
+  @Column(columnDefinition = "TEXT")
   private String length16;
+  @Column(columnDefinition = "TEXT")
   private String length17;
+  @Column(columnDefinition = "TEXT")
   private String length18;
+  @Column(columnDefinition = "TEXT")
   private String length19;
+  @Column(columnDefinition = "TEXT")
   private String length20;
+  @Column(columnDefinition = "TEXT")
   private String length21;
+  @Column(columnDefinition = "TEXT")
   private String length22;
+  @Column(columnDefinition = "TEXT")
   private String length23;
+  @Column(columnDefinition = "TEXT")
   private String length24;
+  @Column(columnDefinition = "TEXT")
   private String length25;
+  @Column(columnDefinition = "TEXT")
   private String length26;
+  @Column(columnDefinition = "TEXT")
   private String length27;
+  @Column(columnDefinition = "TEXT")
   private String length28;
+  @Column(columnDefinition = "TEXT")
   private String length29;
+  @Column(columnDefinition = "TEXT")
   private String length30;
+  @Column(columnDefinition = "TEXT")
   private String length31;
+  @Column(columnDefinition = "TEXT")
   private String length32;
+  @Column(columnDefinition = "TEXT")
   private String length33;
+  @Column(columnDefinition = "TEXT")
   private String length34;
+  @Column(columnDefinition = "TEXT")
   private String length35;
+
+  @Column(columnDefinition = "TEXT")
   private String breadth;
+  @OneToOne(mappedBy = "rccFormWork", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+  private RccFormWorkBreadth breadthData;
+
+  @Column(columnDefinition = "TEXT")
   private String height;
+  @OneToOne(mappedBy = "rccFormWork", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+  private RccFormWorkHeight heightData;
+
   private String quantity;
   private String extra;
   private double area;
@@ -405,12 +447,28 @@ public class RccFormWork {
     this.breadth = breadth;
   }
 
+  public RccFormWorkBreadth getBreadthData() {
+    return breadthData;
+  }
+
+  public void setBreadthData(RccFormWorkBreadth breadthData) {
+    this.breadthData = breadthData;
+  }
+
   public String getHeight() {
     return height;
   }
 
   public void setHeight(String height) {
     this.height = height;
+  }
+
+  public RccFormWorkHeight getHeightData() {
+    return heightData;
+  }
+
+  public void setHeightData(RccFormWorkHeight heightData) {
+    this.heightData = heightData;
   }
 
   public String getQuantity() {
