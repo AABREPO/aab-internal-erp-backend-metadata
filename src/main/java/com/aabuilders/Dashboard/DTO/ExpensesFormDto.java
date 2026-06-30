@@ -35,6 +35,7 @@ public class ExpensesFormDto {
     private Long branchId;
     private String enteredBy;
     private String billArrivalDate;
+    private Long weeklyExpensesId;
 
     public String getAccountType() {
         return accountType;
@@ -266,5 +267,13 @@ public class ExpensesFormDto {
 
     public void setBillArrivalDate(String billArrivalDate) {
         this.billArrivalDate = billArrivalDate;
+    }
+
+    public Long getWeeklyExpensesId() {
+        return weeklyExpensesId;
+    }
+
+    public void setWeeklyExpensesId(Long weeklyExpensesId) {
+        this.weeklyExpensesId = weeklyExpensesId;
     }
 }

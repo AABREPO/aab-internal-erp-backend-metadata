@@ -35,6 +35,7 @@ public class ExpensesEdit {
     private String utilityValidityType;
     private String serviceStartingDate;
     private String billArrivalDate;
+    private Long weeklyExpensesId;
 
     public Long getId() {
         return Id;
@@ -274,5 +275,13 @@ public class ExpensesEdit {
 
     public void setBillArrivalDate(String billArrivalDate) {
         this.billArrivalDate = billArrivalDate;
+    }
+
+    public Long getWeeklyExpensesId() {
+        return weeklyExpensesId;
+    }
+
+    public void setWeeklyExpensesId(Long weeklyExpensesId) {
+        this.weeklyExpensesId = weeklyExpensesId;
     }
 }

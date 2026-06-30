@@ -46,5 +46,5 @@ public class ExpensesForm {
     private Long branchId;
     private String enteredBy;
     private String billArrivalDate;
-
+    private Long weeklyExpensesId;
 }

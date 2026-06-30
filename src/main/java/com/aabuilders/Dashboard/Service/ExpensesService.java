@@ -170,6 +170,7 @@ public class ExpensesService implements ExpensesServices {
             existingExpense.setServiceStartingDate(expensesEdit.getServiceStartingDate());
             existingExpense.setBillArrivalDate(expensesEdit.getBillArrivalDate());
             existingExpense.setBillCopy(expensesEdit.getBillCopy());
+            existingExpense.setWeeklyExpensesId(expensesEdit.getWeeklyExpensesId());
 
             expensesRepo.save(existingExpense);
             return true;

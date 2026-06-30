@@ -57,6 +57,7 @@ public class ExpensesController {
             expensesForm.setUtilityValidityType(expensesFormDto.getUtilityValidityType());
             expensesForm.setServiceStartingDate(expensesFormDto.getServiceStartingDate());
             expensesForm.setBillArrivalDate(expensesFormDto.getBillArrivalDate());
+            expensesForm.setWeeklyExpensesId(expensesFormDto.getWeeklyExpensesId());
             // Save with FIXED TIMESTAMP (30-11-2025)
             expensesServices.saveFormWithFixedTimestamp(expensesForm, expensesFormDto.getBranchId());
 
@@ -103,6 +104,7 @@ public class ExpensesController {
             expensesForm.setServiceStartingDate(expensesFormDto.getServiceStartingDate());
             expensesForm.setBillArrivalDate(expensesFormDto.getBillArrivalDate());
             expensesForm.setEnteredBy(expensesFormDto.getEnteredBy());
+            expensesForm.setWeeklyExpensesId(expensesFormDto.getWeeklyExpensesId());
 
             ExpensesForm saved = expensesServices.saveForm(expensesForm, expensesFormDto.getBranchId());
             return ResponseEntity.status(HttpStatus.CREATED).body(saved);
@@ -189,6 +191,20 @@ public class ExpensesController {
             dto.setNewMachineTools(audit.getNewMachineTools());
             dto.setOldBillCopy(audit.getOldBillCopy());
             dto.setNewBillCopy(audit.getNewBillCopy());
+            dto.setOldUtilityTypeNumber(audit.getOldUtilityTypeNumber());
+            dto.setNewUtilityTypeNumber(audit.getNewUtilityTypeNumber());
+            dto.setOldUtilityType(audit.getOldUtilityType());
+            dto.setNewUtilityType(audit.getNewUtilityType());
+            dto.setOldUtilityValidityType(audit.getOldUtilityValidityType());
+            dto.setNewUtilityValidityType(audit.getNewUtilityValidityType());
+            dto.setOldUtilityValidityDays(audit.getOldUtilityValidityDays());
+            dto.setNewUtilityValidityDays(audit.getNewUtilityValidityDays());
+            dto.setOldPaymentMode(audit.getOldPaymentMode());
+            dto.setNewPaymentMode(audit.getNewPaymentMode());
+            dto.setOldServiceStartingDate(audit.getOldServiceStartingDate());
+            dto.setNewServiceStartingDate(audit.getNewServiceStartingDate());
+            dto.setOldUtilityForTheMonth(audit.getOldUtilityForTheMonth());
+            dto.setNewUtilityForTheMonth(audit.getNewUtilityForTheMonth());
             return dto;
         }).collect(Collectors.toList());
         return ResponseEntity.ok(auditDtos);
