@@ -4,7 +4,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -15,12 +19,32 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter,
+                          JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint) {
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http    .csrf(csrf -> csrf.disable())
-                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS configuration
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(ex -> ex.authenticationEntryPoint(jwtAuthenticationEntryPoint))
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/expenses_form/get_form","/api/login","/api/paint/variant/save","/api/paint/variant/get/all","/api/paint/bulkUploadPaintVariants",
+                        .requestMatchers("/expenses_form/get_form","/api/login","/api/auth/login","/api/auth/register/**",
+                                "/api/auth/forgot-password/**","/api/auth/resend-otp","/api/auth/validate-token",
+                                "/api/paint/variant/save","/api/paint/variant/get/all","/api/paint/bulkUploadPaintVariants",
                                 "/api/paint/variant/update/**","/api/paint/variant/delete/**","/api/paint/variant/delete/all","/api/paint_calculation/edit/paints/**","/api/user/all",
                                 "/api/sign-in","/expenses_form/save","/expenses_form/update/**","/api/expenses/sites","/expenses_form/audit/**","/api/tile/tile/save",
                                 "/api/tile/tile/all","/api/tile/tile/update/**","/googleUploader/pdfs","/api/tile/tile/updateIncrement","/api/tile/tile/increment","/api/user/delete/**"

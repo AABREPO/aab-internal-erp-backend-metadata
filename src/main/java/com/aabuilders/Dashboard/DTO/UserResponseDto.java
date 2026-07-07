@@ -5,39 +5,38 @@ import com.aabuilders.Dashboard.Entity.UserRoles;
 
 import java.util.List;
 
-/**
- * Data Transfer Object for user responses.
- * Contains user information without sensitive data like password.
- */
 public class UserResponseDto {
     private Long id;
     private String email;
     private String username;
+    private String userImageUrl;
     private String employeeId;
     private String position;
     private List<UserRoles> userRoles;
+    private Long branchId;
+    private boolean emailVerified;
+    private String userStatus;
+    private boolean superAdmin;
+    private boolean canCreateUsers;
 
-    /**
-     * Default constructor.
-     */
     public UserResponseDto() {
     }
 
-    /**
-     * Constructor from User entity.
-     * 
-     * @param user User entity (password will be excluded)
-     */
     public UserResponseDto(User user) {
         this.id = user.getId();
         this.email = user.getEmail();
         this.username = user.getUsername();
+        this.userImageUrl = user.getUserImageUrl();
         this.employeeId = user.getEmployeeId();
         this.position = user.getPosition();
         this.userRoles = user.getUserRoles();
+        this.branchId = user.getBranchId();
+        this.emailVerified = user.isEmailVerified();
+        this.userStatus = user.getUserStatus();
+        this.superAdmin = user.isSuperAdmin();
+        this.canCreateUsers = user.canCreateUsers();
     }
 
-    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -60,6 +59,14 @@ public class UserResponseDto {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getUserImageUrl() {
+        return userImageUrl;
+    }
+
+    public void setUserImageUrl(String userImageUrl) {
+        this.userImageUrl = userImageUrl;
     }
 
     public String getEmployeeId() {
@@ -85,4 +92,44 @@ public class UserResponseDto {
     public void setUserRoles(List<UserRoles> userRoles) {
         this.userRoles = userRoles;
     }
-} 
+
+    public Long getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(Long branchId) {
+        this.branchId = branchId;
+    }
+
+    public boolean isEmailVerified() {
+        return emailVerified;
+    }
+
+    public void setEmailVerified(boolean emailVerified) {
+        this.emailVerified = emailVerified;
+    }
+
+    public String getUserStatus() {
+        return userStatus;
+    }
+
+    public void setUserStatus(String userStatus) {
+        this.userStatus = userStatus;
+    }
+
+    public boolean isSuperAdmin() {
+        return superAdmin;
+    }
+
+    public void setSuperAdmin(boolean superAdmin) {
+        this.superAdmin = superAdmin;
+    }
+
+    public boolean isCanCreateUsers() {
+        return canCreateUsers;
+    }
+
+    public void setCanCreateUsers(boolean canCreateUsers) {
+        this.canCreateUsers = canCreateUsers;
+    }
+}

@@ -1,37 +1,14 @@
 package com.aabuilders.Dashboard.DTO;
 
-import com.aabuilders.Dashboard.Entity.UserRoles;
-
-import java.util.List;
-
-public class UserDto {
-    private String adminUsername;
-    private String adminPassword;
+public class RegisterConfirmDto {
     private String email;
-    private String password;
+    private String otp;
     private String username;
+    private String password;
     private String userImageUrl;
     private String employeeId;
     private String position;
-    private List<UserRoles> userRoles;
     private Long branchId;
-    private String userStatus;
-    // Getters and Setters
-    public String getAdminUsername() {
-        return adminUsername;
-    }
-
-    public void setAdminUsername(String adminUsername) {
-        this.adminUsername = adminUsername;
-    }
-
-    public String getAdminPassword() {
-        return adminPassword;
-    }
-
-    public void setAdminPassword(String adminPassword) {
-        this.adminPassword = adminPassword;
-    }
 
     public String getEmail() {
         return email;
@@ -41,12 +18,12 @@ public class UserDto {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getOtp() {
+        return otp;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setOtp(String otp) {
+        this.otp = otp;
     }
 
     public String getUsername() {
@@ -55,6 +32,14 @@ public class UserDto {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getUserImageUrl() {
@@ -81,27 +66,11 @@ public class UserDto {
         this.position = position;
     }
 
-    public List<UserRoles> getUserRoles() {
-        return userRoles;
-    }
-
-    public void setUserRoles(List<UserRoles> userRoles) {
-        this.userRoles = userRoles;
-    }
-
     public Long getBranchId() {
         return branchId;
     }
 
     public void setBranchId(Long branchId) {
         this.branchId = branchId;
-    }
-
-    public String getUserStatus() {
-        return userStatus;
-    }
-
-    public void setUserStatus(String userStatus) {
-        this.userStatus = userStatus;
     }
 }

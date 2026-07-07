@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -21,7 +22,11 @@ public class JwtUtil {
 
     private static final String SECRET_KEY = "aabuilders_jwt_secret_key_2024_very_long_and_secure_key_for_token_generation";
     private static final SecretKey key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
-    private static final long TOKEN_VALIDITY = 24 * 60 * 60 * 1000; // 24 hours
+    private final long tokenValidityMs;
+
+    public JwtUtil(@Value("${app.jwt.expiry-days:30}") long jwtExpiryDays) {
+        this.tokenValidityMs = jwtExpiryDays * 24L * 60L * 60L * 1000L;
+    }
 
     /**
      * Generates a JWT token for the given username.
@@ -46,7 +51,7 @@ public class JwtUtil {
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + TOKEN_VALIDITY))
+                .setExpiration(new Date(System.currentTimeMillis() + tokenValidityMs))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -117,5 +122,14 @@ public class JwtUtil {
     public Boolean validateToken(String token, String username) {
         final String extractedUsername = extractUsername(token);
         return (username.equals(extractedUsername) && !isTokenExpired(token));
+    }
+
+    public boolean isTokenValid(String token) {
+        try {
+            String email = extractUsername(token);
+            return email != null && !isTokenExpired(token);
+        } catch (Exception e) {
+            return false;
+        }
     }
 } 
